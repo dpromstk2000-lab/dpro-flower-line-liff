@@ -97,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
     for (const id of ["recipientName", "recipientPhone", "recipientAddress1"]) {
       DPRO.qs(`#${id}`).required = type === "delivery";
     }
+    deliveryArea.required = type === "delivery";
     dateInput.required = type !== "shipping_consultation";
     if (type === "shipping_consultation") requestedAt.value = "";
   }
@@ -204,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
         phone: DPRO.qs("#customerPhone").value,
         email: DPRO.qs("#customerEmail").value,
         company_name: DPRO.qs("#companyName").value,
-        line_user_id: DPRO.getDemoLineUserId(),
+        line_user_id: DPRO.isDemo() ? DPRO.getDemoLineUserId() : null,
         line_link_approved: DPRO.isDemo(),
         marketing_opt_in: DPRO.qs("#marketingOptIn").checked
       },
