@@ -85,7 +85,14 @@
     },
 
     isDemo() {
-      return new URLSearchParams(location.search).get("demo") === "1";
+      const demoParam = new URLSearchParams(location.search).get("demo");
+
+      if (demoParam === "1") return true;
+      if (demoParam === "0") return false;
+
+      // デモ店舗の公開サイトでは、内部リンクで ?demo=1 が外れても
+      // ブラウザー専用のデモ顧客IDを維持する。
+      return String(cfg.SHOP_CODE || "").endsWith("_demo");
     },
 
     getDemoLineUserId() {
