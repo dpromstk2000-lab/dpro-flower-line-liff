@@ -89,8 +89,31 @@
     },
 
     getDemoLineUserId() {
-      return new URLSearchParams(location.search).get("line_user_id") ||
-        cfg.DEMO_LINE_USER_ID;
+      const explicitId = new URLSearchParams(location.search).get("line_user_id");
+      if (explicitId) return explicitId;
+
+      const storageKey = "dpro_flower_demo_browser_line_user_id";
+
+      try {
+        let storedId = localStorage.getItem(storageKey);
+        if (!storedId) {
+          const randomPart = typeof crypto?.randomUUID === "function"
+            ? crypto.randomUUID().replaceAll("-", "")
+            : `${Date.now()}${Math.random().toString(16).slice(2)}`;
+          storedId = `U_DEMO_FLOWER_BROWSER_${randomPart.slice(0, 32)}`;
+          localStorage.setItem(storageKey, storedId);
+        }
+        return storedId;
+      } catch {
+        if (!globalThis.__dproFlowerDemoBrowserId) {
+          const randomPart = typeof crypto?.randomUUID === "function"
+            ? crypto.randomUUID().replaceAll("-", "")
+            : `${Date.now()}${Math.random().toString(16).slice(2)}`;
+          globalThis.__dproFlowerDemoBrowserId =
+            `U_DEMO_FLOWER_BROWSER_${randomPart.slice(0, 32)}`;
+        }
+        return globalThis.__dproFlowerDemoBrowserId;
+      }
     },
 
     getAdminCode() {

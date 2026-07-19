@@ -113,11 +113,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     root.innerHTML = items.map(item => `
       <article class="card">
-        <span class="badge">${DPRO.escape(item.anniversary_type)}</span>
+        <span class="badge">${DPRO.escape(anniversaryLabel(item.anniversary_type))}</span>
         <h3>${DPRO.escape(item.title)}</h3>
         <p>${DPRO.escape(item.anniversary_date)}・${item.remind_days_before}日前にお知らせ候補</p>
         <div class="price">${item.preferred_budget ? DPRO.yen(item.preferred_budget) : "予算未設定"}</div>
       </article>
     `).join("");
+  }
+
+  function anniversaryLabel(value) {
+    return ({
+      birthday: "誕生日",
+      wedding_anniversary: "結婚記念日",
+      opening_day: "開業日",
+      company_anniversary: "会社設立・周年",
+      memorial_day: "命日・法要",
+      mother_day: "母の日",
+      respect_for_aged_day: "敬老の日",
+      custom: "その他"
+    })[value] || value || "記念日";
   }
 });
