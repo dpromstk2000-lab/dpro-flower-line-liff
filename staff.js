@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="order-number">${DPRO.escape(order.order_number || "")}</div>
               <div class="order-meta">${DPRO.dateTime(order.requested_at)}</div>
             </div>
-            <span class="badge">${DPRO.escape(task.status)}</span>
+            <span class="badge">${DPRO.escape(productionStatusLabel(task.status))}</span>
           </div>
           <h3>${DPRO.escape(item.product_name_snapshot || "商品")}</h3>
           <p>
@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="order-number">${DPRO.escape(order.order_number || "")}</div>
               <div class="order-meta">${DPRO.dateTime(task.scheduled_end_at || order.requested_at)}</div>
             </div>
-            <span class="badge">${DPRO.escape(task.status)}</span>
+            <span class="badge">${DPRO.escape(deliveryStatusLabel(task.status))}</span>
           </div>
           <h3>${DPRO.escape(recipient.recipient_name || recipient.company_or_facility_name || "お届け先")}</h3>
           <p>
@@ -140,5 +140,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
+  }
+
+  function productionStatusLabel(value) {
+    return ({
+      waiting: "制作待ち",
+      assigned: "担当決定",
+      producing: "制作中",
+      quality_check: "確認待ち",
+      completed: "制作完了",
+      cancelled: "キャンセル"
+    })[value] || value || "未設定";
+  }
+
+  function deliveryStatusLabel(value) {
+    return ({
+      waiting: "配達待ち",
+      assigned: "担当決定",
+      preparing: "配達準備",
+      departed: "配達中",
+      delivered: "配達完了",
+      absent: "不在",
+      returned: "持ち戻り",
+      cancelled: "キャンセル"
+    })[value] || value || "未設定";
   }
 });
