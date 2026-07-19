@@ -87,6 +87,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function toggleFulfillment() {
     const type = fulfillment.value;
     recipientCard.classList.toggle("hidden", type !== "delivery");
+    const customerStepNumber = DPRO.qs("#customerStepNumber");
+    if (customerStepNumber) {
+      customerStepNumber.textContent = type === "delivery" ? "5" : "4";
+    }
     DPRO.qs("#dateField").classList.toggle("hidden", type === "shipping_consultation");
     DPRO.qs("#slotField").classList.toggle("hidden", type === "shipping_consultation");
 
