@@ -697,3 +697,200 @@ tr:last-child td { border-bottom: 0; }
   .toolbar .field, .toolbar .btn { flex: 1 1 100%; }
   .order-head { display: grid; }
 }
+
+
+/* ==========================================================
+   STEP FLOWER-15: 完成写真・電話/店頭注文
+   ========================================================== */
+
+.photo-uploader {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+}
+
+.photo-uploader-title {
+  margin: 0 0 10px;
+  color: var(--forest-2);
+  font-weight: 850;
+}
+
+.photo-upload-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.photo-visibility {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 10px 0 0;
+  font-weight: 750;
+  color: var(--forest-2);
+}
+
+.photo-visibility input {
+  width: 21px;
+  height: 21px;
+  min-height: auto;
+  accent-color: var(--forest);
+}
+
+.photo-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(138px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.photo-preview {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--sage-pale);
+}
+
+.photo-preview img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #edf2ed;
+}
+
+.photo-preview figcaption {
+  padding: 8px 10px;
+  color: var(--muted);
+  font-size: .76rem;
+}
+
+.completion-photos {
+  margin-top: 17px;
+  padding-top: 15px;
+  border-top: 1px dashed var(--line);
+}
+
+.completion-photos h4 {
+  margin: 0 0 10px;
+  color: var(--forest-2);
+  font-size: .96rem;
+}
+
+.counter-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, .8fr) minmax(0, 1.5fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.counter-sidebar {
+  position: sticky;
+  top: 88px;
+}
+
+.customer-search-results {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+  max-height: 480px;
+  overflow: auto;
+}
+
+.customer-choice {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 13px;
+  color: var(--ink);
+  background: white;
+  cursor: pointer;
+}
+
+.customer-choice:hover,
+.customer-choice.selected {
+  border-color: var(--forest);
+  background: #f8fcf8;
+  box-shadow: 0 0 0 3px rgba(33,76,59,.09);
+}
+
+.customer-choice strong {
+  display: block;
+  color: var(--forest-2);
+}
+
+.customer-choice span {
+  display: block;
+  color: var(--muted);
+  font-size: .8rem;
+}
+
+.selected-customer {
+  margin-top: 13px;
+}
+
+.order-item-list {
+  display: grid;
+  gap: 13px;
+}
+
+.order-item-row {
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  padding: 15px;
+  background: #fff;
+}
+
+.order-item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.order-item-title {
+  color: var(--forest-2);
+  font-weight: 850;
+}
+
+.order-item-grid {
+  display: grid;
+  grid-template-columns: minmax(190px, 1.3fr) .55fr .7fr;
+  gap: 12px;
+}
+
+.order-item-grid .wide {
+  grid-column: 1 / -1;
+}
+
+.inline-result {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.success-panel {
+  border: 1px solid #bee0c7;
+  background: #eef9f1;
+}
+
+@media (max-width: 900px) {
+  .counter-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .counter-sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 680px) {
+  .photo-upload-row,
+  .order-item-grid {
+    grid-template-columns: 1fr;
+  }
+}
