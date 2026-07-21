@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#214c3b">
+  <meta name="description" content="DPRO フラワーショップの商品カタログ。花束、アレンジメント、開店祝い、お供えなどを写真から選べます。">
+  <title>お花の商品カタログ｜DPRO フラワーショップ</title>
+  <link rel="stylesheet" href="common.css?v=FLOWER-15">
+  <link rel="stylesheet" href="catalog.css?v=FLOWER-NEXT-4">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand catalog-brand-link" href="catalog.html" aria-label="商品カタログのトップへ">
+        <div class="brand-mark">✿</div>
+        <div>
+          <div class="brand-title">DPRO フラワーショップ</div>
+          <div class="brand-subtitle">写真から選べるお花の商品カタログ</div>
+        </div>
+      </a>
+      <nav class="topnav" id="topnav" aria-label="メインメニュー"></nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero catalog-hero">
+      <div class="eyebrow">FLOWER CATALOG</div>
+      <h1>贈る目的と雰囲気から、ぴったりのお花を。</h1>
+      <p>花束、アレンジメント、開店祝い、お供えなどを写真から選べます。商品を決めきれない場合は、用途・ご予算からオーダーメイドでご相談いただけます。</p>
+      <div class="hero-actions">
+        <a class="btn btn-ghost" href="#catalogProducts">商品を見る</a>
+        <a class="btn btn-rose" href="index.html?mode=custom#orderForm">オーダーメイドで相談</a>
+      </div>
+    </section>
+
+    <div id="pageAlert" class="hidden" role="alert"></div>
+
+    <section class="card catalog-filter-card" aria-labelledby="catalogFilterTitle">
+      <div class="catalog-filter-heading">
+        <div>
+          <h2 id="catalogFilterTitle">商品を探す</h2>
+          <p>商品名、用途、説明、季節名から検索できます。</p>
+        </div>
+        <div id="resultCount" class="catalog-result-count" aria-live="polite">読み込み中…</div>
+      </div>
+
+      <div class="catalog-filter-grid">
+        <div class="field">
+          <label for="catalogSearch">キーワード</label>
+          <div class="catalog-search-row">
+            <input id="catalogSearch" type="search" placeholder="例：誕生日、開店祝い、ピンク" autocomplete="off">
+            <button id="clearSearch" type="button" class="btn btn-secondary btn-small">クリア</button>
+          </div>
+        </div>
+        <label class="catalog-check">
+          <input id="featuredOnly" type="checkbox">
+          <span>おすすめ商品のみ表示</span>
+        </label>
+      </div>
+
+      <div>
+        <div class="catalog-filter-label">カテゴリ</div>
+        <div id="categoryChips" class="catalog-category-chips" aria-label="商品カテゴリ">
+          <span class="help">カテゴリを読み込んでいます…</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="featuredSection" class="hidden" aria-labelledby="featuredTitle">
+      <div class="catalog-section-heading">
+        <div>
+          <div class="eyebrow catalog-dark-eyebrow">RECOMMENDED</div>
+          <h2 id="featuredTitle" class="section-title catalog-section-title">おすすめのお花</h2>
+        </div>
+      </div>
+      <div id="featuredProducts" class="catalog-product-grid"></div>
+    </section>
+
+    <section id="catalogProducts" aria-labelledby="allProductsTitle">
+      <div class="catalog-section-heading">
+        <div>
+          <div class="eyebrow catalog-dark-eyebrow">ALL PRODUCTS</div>
+          <h2 id="allProductsTitle" class="section-title catalog-section-title">商品一覧</h2>
+        </div>
+        <button id="reloadCatalog" type="button" class="btn btn-secondary btn-small">最新情報に更新</button>
+      </div>
+
+      <div id="productGrid" class="catalog-product-grid">
+        <article class="card catalog-loading-card">
+          <div class="catalog-loading-image"></div>
+          <div class="loading">商品を読み込んでいます…</div>
+        </article>
+      </div>
+
+      <div id="emptyState" class="card catalog-empty hidden">
+        <div class="catalog-empty-icon">💐</div>
+        <h3>条件に合う商品がありません</h3>
+        <p>キーワードやカテゴリを変更して、もう一度お試しください。</p>
+        <button id="resetFilters" type="button" class="btn btn-primary">すべての商品を表示</button>
+      </div>
+    </section>
+
+    <section class="card catalog-custom-card">
+      <div>
+        <div class="eyebrow catalog-dark-eyebrow">CUSTOM ORDER</div>
+        <h2>写真の商品以外も、お作りできます。</h2>
+        <p>用途、ご予算、色合い、雰囲気、避けたいお花などをお聞きして制作します。スタンド花や法人向けのご注文もご相談ください。</p>
+      </div>
+      <a class="btn btn-primary" href="index.html?mode=custom#orderForm">オーダーメイドを相談する</a>
+    </section>
+
+    <footer class="footer">
+      <div>DPRO フラワーショップ 写真付き商品カタログ</div>
+      <div id="appVersion"></div>
+    </footer>
+  </main>
+
+  <dialog id="productDialog" class="catalog-dialog" aria-labelledby="dialogProductName">
+    <div class="catalog-dialog-shell">
+      <button id="closeProductDialog" class="catalog-dialog-close" type="button" aria-label="商品詳細を閉じる">×</button>
+      <div id="productDialogContent">
+        <div class="loading">商品情報を読み込んでいます…</div>
+      </div>
+    </div>
+  </dialog>
+
+  <nav class="mobile-bottom-nav catalog-mobile-nav" id="mobileNav" aria-label="スマートフォンメニュー"></nav>
+
+  <script src="config.js?v=FLOWER-15"></script>
+  <script src="common.js?v=FLOWER-15"></script>
+  <script src="catalog.js?v=FLOWER-NEXT-4"></script>
+</body>
+</html>
