@@ -4,8 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#214c3b">
+  <meta name="description" content="写真付き商品カタログから選ぶ注文と、用途・予算から相談するオーダーメイド注文に対応したDPROフラワーショップLINEです。">
   <title>花を注文する｜DPRO フラワーショップ</title>
   <link rel="stylesheet" href="common.css?v=FLOWER-15">
+  <link rel="stylesheet" href="order-next.css?v=FLOWER-NEXT-5">
 </head>
 <body>
   <header class="topbar">
@@ -14,229 +16,367 @@
         <div class="brand-mark">✿</div>
         <div>
           <div class="brand-title">DPRO フラワーショップ</div>
-          <div class="brand-subtitle">注文・制作・配達管理 LINE</div>
+          <div class="brand-subtitle">写真から選ぶ注文・オーダーメイド相談</div>
         </div>
       </div>
-      <nav class="topnav" id="topnav"></nav>
+      <nav class="topnav" id="topnav" aria-label="メインメニュー"></nav>
     </div>
   </header>
-  
-<main class="page-shell">
-  <section class="hero">
-    <div class="eyebrow">LINEでかんたん花注文</div>
-    <h1>想いに合うお花を、迷わず注文。</h1>
-    <p>用途・ご予算・色合い・受取方法を選ぶだけ。完成までの状況もマイページで確認できます。</p>
-    <div class="hero-actions">
-      <a class="btn btn-ghost" href="#orderForm">花を注文する</a>
-      <a class="btn btn-rose" href="member.html">注文履歴を見る</a>
-    </div>
-  </section>
 
-  <div id="pageAlert" class="hidden"></div>
+  <main class="page-shell">
+    <section class="hero next-order-hero">
+      <div class="eyebrow">LINEでかんたん花注文</div>
+      <h1>写真から選ぶ。想いから相談する。</h1>
+      <p>カタログ商品はそのまま注文。まだイメージが決まっていない場合は、用途・ご予算・色合いからオーダーメイドでご相談いただけます。</p>
+      <div class="hero-actions">
+        <a class="btn btn-ghost" href="catalog.html">写真付きカタログを見る</a>
+        <a class="btn btn-rose" href="index.html?mode=custom#orderForm">オーダーメイドで相談</a>
+      </div>
+    </section>
 
-  <section class="grid grid-3" aria-label="特長">
-    <article class="card"><h3>💐 用途から選べる</h3><p>誕生日、開店祝い、送別、供花などに対応します。</p></article>
-    <article class="card"><h3>📷 完成写真を確認</h3><p>公開設定された完成写真をマイページで確認できます。</p></article>
-    <article class="card"><h3>🔁 前回から再注文</h3><p>過去の注文内容を見ながら、次の注文を簡単に行えます。</p></article>
-  </section>
+    <div id="pageAlert" class="hidden" role="alert"></div>
 
-  <section id="orderForm">
-    <h2 class="section-title">お花のご注文</h2>
-    <p class="section-note">初回のみお客様情報をご入力ください。次回以降はLINE連携で入力を省略できます。</p>
+    <section class="grid grid-3" aria-label="特長">
+      <article class="card"><h3>📷 写真から選べる</h3><p>商品写真、価格、説明、受取方法を確認して注文できます。</p></article>
+      <article class="card"><h3>🎨 希望からお作り</h3><p>用途、色、雰囲気、希望する花、避けたい花を制作へ引き継ぎます。</p></article>
+      <article class="card"><h3>🔁 完成後も便利</h3><p>完成写真、進捗、過去の注文内容をマイページで確認できます。</p></article>
+    </section>
 
-    <form id="flowerOrderForm" novalidate>
-      <article class="card">
-        <h2>1. 商品を選ぶ</h2>
-        <div id="productList" class="product-list">
-          <div class="loading">商品を読み込んでいます…</div>
-        </div>
-      </article>
+    <section id="orderModeChooser" aria-labelledby="orderModeTitle">
+      <h2 id="orderModeTitle" class="section-title">注文方法を選ぶ</h2>
+      <p class="section-note">途中で切り替えても、入力済みのお客様情報や受取日時は消えません。</p>
 
-      <article class="card" style="margin-top:18px">
-        <h2>2. 用途・雰囲気</h2>
-        <div class="form-grid">
-          <div class="field">
-            <label class="required" for="usageType">用途</label>
-            <select id="usageType" required>
-              <option value="">選択してください</option>
-              <option value="birthday">誕生日</option>
-              <option value="wedding_anniversary">結婚記念日</option>
-              <option value="mother_day">母の日</option>
-              <option value="father_day">父の日</option>
-              <option value="farewell">送別・退職</option>
-              <option value="entrance_graduation">入学・卒業</option>
-              <option value="opening">開店・開業祝い</option>
-              <option value="anniversary">周年祝い</option>
-              <option value="recital_event">発表会・公演</option>
-              <option value="get_well">お見舞い</option>
-              <option value="memorial">お供え・法事</option>
-              <option value="funeral">葬儀・供花</option>
-              <option value="home_use">自宅用</option>
-              <option value="business">法人・ビジネス</option>
-              <option value="other">その他</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="colorMood">色・雰囲気</label>
-            <select id="colorMood">
-              <option value="おまかせ">おまかせ</option>
-              <option>赤・ピンク系</option>
-              <option>黄色・オレンジ系</option>
-              <option>白・グリーン系</option>
-              <option>青・紫系</option>
-              <option>カラフル</option>
-              <option>優しい</option>
-              <option>明るい</option>
-              <option>華やか</option>
-              <option>上品</option>
-              <option>シック</option>
-            </select>
-          </div>
-          <div class="field full">
-            <label for="flowerPreferences">ご希望・避けたい花</label>
-            <textarea id="flowerPreferences" placeholder="例：春らしく、香りの強い花は避けてください"></textarea>
-          </div>
-        </div>
-      </article>
+      <div class="next-mode-grid">
+        <button type="button" class="next-mode-card active" data-order-mode="catalog" aria-pressed="true">
+          <span class="next-mode-icon">🌷</span>
+          <span class="next-mode-copy">
+            <strong>写真から商品を選ぶ</strong>
+            <small>商品、価格、説明を確認して注文</small>
+          </span>
+          <span class="next-mode-check">選択中</span>
+        </button>
 
-      <article class="card" style="margin-top:18px">
-        <h2>3. 受取方法・日時</h2>
-        <div class="form-grid">
-          <div class="field">
-            <label class="required" for="fulfillmentType">受取方法</label>
-            <select id="fulfillmentType" required>
-              <option value="pickup">店頭受取</option>
-              <option value="delivery">店舗配達</option>
-              <option value="shipping_consultation">配送相談</option>
-            </select>
-          </div>
-          <div class="field" id="dateField">
-            <label class="required" for="requestedDate">希望日</label>
-            <input id="requestedDate" type="date" required>
-          </div>
-          <div class="field full" id="slotField">
-            <label>希望時間</label>
-            <div id="slotGrid" class="slot-grid">
-              <span class="help">日付を選択してください。</span>
+        <button type="button" class="next-mode-card" data-order-mode="custom" aria-pressed="false">
+          <span class="next-mode-icon">🎨</span>
+          <span class="next-mode-copy">
+            <strong>オーダーメイドで相談</strong>
+            <small>用途、予算、雰囲気から制作を依頼</small>
+          </span>
+          <span class="next-mode-check">こちらを選ぶ</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="orderForm">
+      <h2 class="section-title">お花のご注文</h2>
+      <p id="orderModeDescription" class="section-note">写真付きカタログの商品を選択してください。</p>
+
+      <form id="flowerOrderForm" novalidate>
+        <input id="orderModeInput" type="hidden" value="catalog">
+
+        <article id="catalogProductCard" class="card">
+          <div class="next-card-heading">
+            <div>
+              <h2>1. 商品を選ぶ</h2>
+              <p>商品写真、説明、価格を確認して選択してください。</p>
             </div>
-            <input id="requestedAt" type="hidden">
+            <a class="btn btn-secondary btn-small" href="catalog.html">大きな写真で見る</a>
           </div>
-        </div>
-      </article>
 
-      <article class="card hidden" id="recipientCard" style="margin-top:18px">
-        <h2>4. お届け先</h2>
-        <div class="form-grid">
-          <div class="field">
-            <label class="required" for="recipientName">受取人・会社名</label>
-            <input id="recipientName" autocomplete="name">
+          <div id="catalogSelectionNotice" class="hidden"></div>
+          <div id="productList" class="next-product-list">
+            <div class="loading">商品を読み込んでいます…</div>
           </div>
-          <div class="field">
-            <label class="required" for="recipientPhone">受取人電話番号</label>
-            <input id="recipientPhone" inputmode="tel" autocomplete="tel">
-          </div>
-          <div class="field">
-            <label for="recipientPostalCode">郵便番号</label>
-            <input id="recipientPostalCode" inputmode="numeric">
-          </div>
-          <div class="field">
-            <label class="required" for="deliveryArea">配達エリア</label>
-            <select id="deliveryArea"><option value="">選択してください</option></select>
-          </div>
-          <div class="field">
-            <label for="recipientPrefecture">都道府県</label>
-            <input id="recipientPrefecture" value="福岡県">
-          </div>
-          <div class="field">
-            <label for="recipientCity">市区町村</label>
-            <input id="recipientCity">
-          </div>
-          <div class="field full">
-            <label class="required" for="recipientAddress1">番地・建物名</label>
-            <input id="recipientAddress1">
-          </div>
-          <div class="field">
-            <label for="facilityName">会社・施設名</label>
-            <input id="facilityName">
-          </div>
-          <div class="field">
-            <label for="venueName">会場名</label>
-            <input id="venueName">
-          </div>
-          <div class="field full">
-            <label for="deliveryNote">配達時の注意</label>
-            <textarea id="deliveryNote" placeholder="例：到着前に電話、正面入口横へ設置"></textarea>
-          </div>
-        </div>
-      </article>
 
-      <article class="card" style="margin-top:18px">
-        <h2><span id="customerStepNumber">4</span>. お客様情報</h2>
-        <div class="form-grid">
-          <div class="field">
-            <label class="required" for="customerName">お名前</label>
-            <input id="customerName" autocomplete="name" required>
-          </div>
-          <div class="field">
-            <label class="required" for="customerPhone">電話番号</label>
-            <input id="customerPhone" inputmode="tel" autocomplete="tel" required>
-          </div>
-          <div class="field">
-            <label for="customerEmail">メールアドレス</label>
-            <input id="customerEmail" type="email" autocomplete="email">
-          </div>
-          <div class="field">
-            <label for="companyName">会社名</label>
-            <input id="companyName" autocomplete="organization">
-          </div>
-          <div class="field full">
-            <label for="messageText">メッセージカード</label>
-            <textarea id="messageText" placeholder="例：お誕生日おめでとう。いつもありがとう。"></textarea>
-          </div>
-          <div class="field">
-            <label for="senderName">カードのお名前</label>
-            <input id="senderName">
-          </div>
-          <div class="field">
-            <label for="budgetAmount">ご予算</label>
-            <input id="budgetAmount" type="number" min="0" step="100">
-          </div>
-          <div class="field full">
-            <label for="customerNote">その他のご希望</label>
-            <textarea id="customerNote"></textarea>
-          </div>
-          <div class="field full">
-            <label>
-              <input id="marketingOptIn" type="checkbox" style="width:auto;min-height:auto">
-              記念日や季節のお花のご案内を受け取る
-            </label>
-          </div>
-        </div>
-      </article>
+          <div id="selectedProductPreview" class="next-selected-product hidden"></div>
+          <div id="productOptions" class="next-product-options hidden"></div>
+        </article>
 
-      <article class="card" style="margin-top:18px">
-        <h2>ご注文内容</h2>
-        <div id="orderSummary" class="summary-list">
-          <div class="summary-row"><span>商品</span><strong>未選択</strong></div>
-          <div class="summary-row"><span>合計目安</span><strong>¥0</strong></div>
-        </div>
-        <div id="formAlert" class="hidden"></div>
-        <div class="actions">
-          <button id="submitButton" type="submit" class="btn btn-primary">この内容で注文する</button>
-        </div>
-      </article>
-    </form>
-  </section>
+        <article id="customProductCard" class="card hidden">
+          <div class="next-card-heading">
+            <div>
+              <h2>1. オーダーメイド内容</h2>
+              <p>花の形と仕上がりの希望を入力してください。すべて決まっていなくても注文できます。</p>
+            </div>
+            <a class="btn btn-secondary btn-small" href="catalog.html">作例を見る</a>
+          </div>
 
-  <footer class="footer">
-    <div>DPRO フラワーショップ 注文・制作・配達管理 LINE</div>
-    <div id="appVersion"></div>
-  </footer>
-</main>
+          <div class="form-grid">
+            <div class="field">
+              <label class="required" for="customBaseProduct">お花の形</label>
+              <select id="customBaseProduct">
+                <option value="">読み込み中…</option>
+              </select>
+              <span class="help">花束、アレンジメント、スタンド花など</span>
+            </div>
 
-  <nav class="mobile-bottom-nav" id="mobileNav"></nav>
+            <div class="field">
+              <label for="customSizeLabel">サイズ・ボリューム</label>
+              <select id="customSizeLabel">
+                <option value="">商品標準・おまかせ</option>
+                <option value="コンパクト">コンパクト</option>
+                <option value="標準">標準</option>
+                <option value="ボリューム重視">ボリューム重視</option>
+                <option value="大型">大型</option>
+                <option value="設置場所に合わせて相談">設置場所に合わせて相談</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label class="required" for="designStyle">仕上がりの雰囲気</label>
+              <select id="designStyle">
+                <option value="">選択してください</option>
+                <option value="おまかせ">おまかせ</option>
+                <option value="優しくナチュラル">優しくナチュラル</option>
+                <option value="明るく可愛らしい">明るく可愛らしい</option>
+                <option value="華やかで豪華">華やかで豪華</option>
+                <option value="上品で落ち着いた">上品で落ち着いた</option>
+                <option value="シックで大人っぽい">シックで大人っぽい</option>
+                <option value="個性的・印象的">個性的・印象的</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="wrappingOption">ラッピング</label>
+              <select id="wrappingOption">
+                <option value="">商品標準・おまかせ</option>
+                <option value="明るい色">明るい色</option>
+                <option value="落ち着いた色">落ち着いた色</option>
+                <option value="上品">上品</option>
+                <option value="可愛らしい">可愛らしい</option>
+                <option value="法人・式典向け">法人・式典向け</option>
+                <option value="ラッピング不要">ラッピング不要</option>
+              </select>
+            </div>
+
+            <div class="field full">
+              <label for="preferredFlowers">使用してほしい花・イメージ</label>
+              <textarea id="preferredFlowers" placeholder="例：バラを入れてほしい、春らしい雰囲気、丸い形にしてほしい"></textarea>
+            </div>
+
+            <div class="field full">
+              <label for="avoidFlowers">避けたい花・色・香り</label>
+              <textarea id="avoidFlowers" placeholder="例：ユリは避けたい、香りの強い花は使わない、赤色は少なめ"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="ribbonText">リボン・短い札の文字</label>
+              <input id="ribbonText" maxlength="300" placeholder="例：祝御開店">
+            </div>
+
+            <div class="field">
+              <label for="standingSignText">立札の内容</label>
+              <input id="standingSignText" maxlength="1000" placeholder="例：祝 御開店　株式会社DPRO">
+            </div>
+
+            <div class="field full">
+              <label for="referenceImageNote">参考イメージについて</label>
+              <textarea id="referenceImageNote" placeholder="例：後ほどLINEで参考写真を送ります。以前の注文と近い雰囲気を希望します。"></textarea>
+              <label class="next-inline-check">
+                <input id="referencePhotoRequired" type="checkbox">
+                注文後にLINEで参考写真を送りたい
+              </label>
+            </div>
+          </div>
+
+          <div id="customSelectedProductPreview" class="next-selected-product hidden"></div>
+          <div id="customProductOptions" class="next-product-options hidden"></div>
+        </article>
+
+        <article class="card next-section-card">
+          <h2>2. 用途・色合い</h2>
+          <div class="form-grid">
+            <div class="field">
+              <label class="required" for="usageType">用途</label>
+              <select id="usageType" required>
+                <option value="">選択してください</option>
+                <option value="birthday">誕生日</option>
+                <option value="wedding_anniversary">結婚記念日</option>
+                <option value="mother_day">母の日</option>
+                <option value="father_day">父の日</option>
+                <option value="farewell">送別・退職</option>
+                <option value="entrance_graduation">入学・卒業</option>
+                <option value="opening">開店・開業祝い</option>
+                <option value="anniversary">周年祝い</option>
+                <option value="recital_event">発表会・公演</option>
+                <option value="get_well">お見舞い</option>
+                <option value="memorial">お供え・法事</option>
+                <option value="funeral">葬儀・供花</option>
+                <option value="home_use">自宅用</option>
+                <option value="business">法人・ビジネス</option>
+                <option value="other">その他</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="colorMood">色・雰囲気</label>
+              <select id="colorMood">
+                <option value="おまかせ">おまかせ</option>
+                <option>赤・ピンク系</option>
+                <option>黄色・オレンジ系</option>
+                <option>白・グリーン系</option>
+                <option>青・紫系</option>
+                <option>カラフル</option>
+                <option>優しい</option>
+                <option>明るい</option>
+                <option>華やか</option>
+                <option>上品</option>
+                <option>シック</option>
+              </select>
+            </div>
+
+            <div id="catalogAdjustmentField" class="field full">
+              <label for="flowerPreferences">カタログ商品への調整希望</label>
+              <textarea id="flowerPreferences" placeholder="例：写真より少し明るく、香りの強い花は避けてください"></textarea>
+            </div>
+          </div>
+        </article>
+
+        <article class="card next-section-card">
+          <h2>3. 受取方法・日時</h2>
+          <div class="form-grid">
+            <div class="field">
+              <label class="required" for="fulfillmentType">受取方法</label>
+              <select id="fulfillmentType" required>
+                <option value="pickup">店頭受取</option>
+                <option value="delivery">店舗配達</option>
+                <option value="shipping_consultation">配送相談</option>
+              </select>
+              <div id="fulfillmentHelp" class="help"></div>
+            </div>
+
+            <div class="field" id="dateField">
+              <label class="required" for="requestedDate">希望日</label>
+              <input id="requestedDate" type="date" required>
+            </div>
+
+            <div class="field full" id="slotField">
+              <label>希望時間</label>
+              <div id="slotGrid" class="slot-grid">
+                <span class="help">日付を選択してください。</span>
+              </div>
+              <input id="requestedAt" type="hidden">
+            </div>
+          </div>
+        </article>
+
+        <article class="card hidden next-section-card" id="recipientCard">
+          <h2>4. お届け先</h2>
+          <div class="form-grid">
+            <div class="field">
+              <label class="required" for="recipientName">受取人・会社名</label>
+              <input id="recipientName" autocomplete="name">
+            </div>
+            <div class="field">
+              <label class="required" for="recipientPhone">受取人電話番号</label>
+              <input id="recipientPhone" inputmode="tel" autocomplete="tel">
+            </div>
+            <div class="field">
+              <label for="recipientPostalCode">郵便番号</label>
+              <input id="recipientPostalCode" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label class="required" for="deliveryArea">配達エリア</label>
+              <select id="deliveryArea"><option value="">選択してください</option></select>
+            </div>
+            <div class="field">
+              <label for="recipientPrefecture">都道府県</label>
+              <input id="recipientPrefecture" value="福岡県">
+            </div>
+            <div class="field">
+              <label for="recipientCity">市区町村</label>
+              <input id="recipientCity">
+            </div>
+            <div class="field full">
+              <label class="required" for="recipientAddress1">番地・建物名</label>
+              <input id="recipientAddress1">
+            </div>
+            <div class="field">
+              <label for="facilityName">会社・施設名</label>
+              <input id="facilityName">
+            </div>
+            <div class="field">
+              <label for="venueName">会場名</label>
+              <input id="venueName">
+            </div>
+            <div class="field full">
+              <label for="deliveryNote">配達時の注意</label>
+              <textarea id="deliveryNote" placeholder="例：到着前に電話、正面入口横へ設置"></textarea>
+            </div>
+          </div>
+        </article>
+
+        <article class="card next-section-card">
+          <h2><span id="customerStepNumber">4</span>. お客様情報</h2>
+          <div class="form-grid">
+            <div class="field">
+              <label class="required" for="customerName">お名前</label>
+              <input id="customerName" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label class="required" for="customerPhone">電話番号</label>
+              <input id="customerPhone" inputmode="tel" autocomplete="tel" required>
+            </div>
+            <div class="field">
+              <label for="customerEmail">メールアドレス</label>
+              <input id="customerEmail" type="email" autocomplete="email">
+            </div>
+            <div class="field">
+              <label for="companyName">会社名</label>
+              <input id="companyName" autocomplete="organization">
+            </div>
+            <div class="field full">
+              <label for="messageText">メッセージカード</label>
+              <textarea id="messageText" placeholder="例：お誕生日おめでとう。いつもありがとう。"></textarea>
+            </div>
+            <div class="field">
+              <label for="senderName">カードのお名前</label>
+              <input id="senderName">
+            </div>
+            <div class="field">
+              <label class="required" for="budgetAmount">ご予算</label>
+              <input id="budgetAmount" type="number" min="0" step="100" required>
+              <span id="budgetHelp" class="help">選択商品の価格を初期表示します。</span>
+            </div>
+            <div class="field full">
+              <label for="customerNote">その他のご希望</label>
+              <textarea id="customerNote"></textarea>
+            </div>
+            <div class="field full">
+              <label class="next-inline-check">
+                <input id="marketingOptIn" type="checkbox">
+                記念日や季節のお花のご案内を受け取る
+              </label>
+            </div>
+          </div>
+        </article>
+
+        <article class="card next-section-card next-summary-card">
+          <h2>ご注文内容</h2>
+          <div id="orderSummary" class="summary-list">
+            <div class="summary-row"><span>注文方法</span><strong>写真から商品を選ぶ</strong></div>
+            <div class="summary-row"><span>商品</span><strong>未選択</strong></div>
+            <div class="summary-row"><span>合計目安</span><strong>¥0</strong></div>
+          </div>
+          <div id="formAlert" class="hidden" role="alert"></div>
+          <div class="actions">
+            <button id="submitButton" type="submit" class="btn btn-primary">この内容で注文する</button>
+          </div>
+          <p class="help">送信後、受付番号と制作状況をマイページで確認できます。</p>
+        </article>
+      </form>
+    </section>
+
+    <footer class="footer">
+      <div>DPRO フラワーショップ ベーカリー型＋制作・配送管理型</div>
+      <div id="appVersion"></div>
+    </footer>
+  </main>
+
+  <nav class="mobile-bottom-nav next-mobile-nav" id="mobileNav" aria-label="スマートフォンメニュー"></nav>
+
   <script src="config.js?v=FLOWER-15"></script>
   <script src="common.js?v=FLOWER-15"></script>
-  <script src="index.js?v=FLOWER-15"></script>
+  <script src="index.js?v=FLOWER-NEXT-5"></script>
 </body>
 </html>
