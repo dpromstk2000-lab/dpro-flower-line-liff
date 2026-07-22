@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
-  const PAGE_VERSION = "FLOWER-NEXT-10-SYSTEM-CHECK-20260722";
+  const PAGE_VERSION = "FLOWER-NEXT-10-R1-SYSTEM-CHECK-20260722";
 
   const state = {
     report: {
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const [healthResult, adminResult] = await Promise.all([
+      const [healthResult, adminResult] = await Promise.allSettled([
         rawApi("/health"),
         rawApi("/api/admin/system-check", {
           admin: true,
@@ -98,10 +98,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }),
       ]);
 
-      report.health = healthResult.data;
-      report.health_http = healthResult.status;
-      report.admin_system_check = adminResult.data;
-      report.admin_http = adminResult.status;
+      if (healthResult.status === "fulfilled") {
+        report.health = healthResult.value.data;
+        report.health_http = healthResult.value.status;
+      } else {
+        report.health_error = serializeError(healthResult.reason);
+      }
+
+      if (adminResult.status === "fulfilled") {
+        report.admin_system_check = adminResult.value.data;
+        report.admin_http = adminResult.value.status;
+      } else {
+        report.admin_error = serializeError(adminResult.reason);
+      }
 
       const [apiRows, pageRows] = await Promise.all([
         runApiProbes(adminCode),
@@ -114,10 +123,10 @@ document.addEventListener("DOMContentLoaded", () => {
       renderReadOnly(report);
       DPRO.setAlert(
         alertRoot,
-        collectAllReadRows(report).every(row => row.ok !== false)
+        collectAllReadRows().every(row => row.ok !== false)
           ? "読取専用の総合検査が完了しました。"
           : "一部の検査で問題が見つかりました。NG項目を確認してください。",
-        collectAllReadRows(report).every(row => row.ok !== false)
+        collectAllReadRows().every(row => row.ok !== false)
           ? "info"
           : "warning"
       );
@@ -355,7 +364,18 @@ document.addEventListener("DOMContentLoaded", () => {
       "未取得";
 
     const platformRows = [
-      rowFromCheck("worker_api", "Worker API", checks.worker_api ?? health.ok, admin.version || health.version),
+      rowFromCheck(
+        "worker_api",
+        "WorkerヘルスAPI",
+        report.health_error ? false : health.ok,
+        report.health_error?.message || health.version || "未取得"
+      ),
+      rowFromCheck(
+        "admin_system_check_api",
+        "管理総合検査API",
+        report.admin_error ? false : Boolean(admin && Object.keys(admin).length),
+        report.admin_error?.message || admin.version || "未取得"
+      ),
       rowFromCheck("database_rpc", "Supabase RPC", checks.database_rpc, detailBoolean(checks.database_rpc)),
       rowFromCheck("next_database_rpc", "FLOWER NEXT DB検査", checks.next_database_rpc, admin.next_database?.version || ""),
       rowFromCheck("required_tables", "必須24テーブル", checks.required_tables, tableDetail(admin.worker_tests?.tables)),
@@ -738,12 +758,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return `${url}${separator}_check=${Date.now()}_${Math.random().toString(16).slice(2)}`;
   }
 
-  function collectAllReadRows(report) {
-    return [
-      ...state.readRows,
-      ...(report.api_probes || []),
-      ...(report.page_probes || []),
-    ];
+  function collectAllReadRows() {
+    return [...state.readRows];
   }
 
   function detailBoolean(value) {
