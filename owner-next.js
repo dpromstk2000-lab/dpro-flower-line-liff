@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   mountPublicNavigation();
   initializeDates();
+  enhanceDateInputs();
   bindEvents();
 
   codeInput.value = DPRO.getAdminCode();
@@ -64,10 +65,48 @@ document.addEventListener("DOMContentLoaded", () => {
     const today = DPRO.todayJst();
     ["dashboardDate", "productionDate", "pickupDate", "deliveryDate", "capacityDate"].forEach(id => {
       const input = DPRO.qs(`#${id}`);
-      if (input) input.value = today;
+      if (input) {
+        input.value = today;
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+      }
     });
     DPRO.qs("#orderFrom").value = today;
     DPRO.qs("#orderTo").value = DPRO.addDaysJst(14);
+  }
+
+  function enhanceDateInputs() {
+    DPRO.qsa('input[type="date"]').forEach(input => {
+      if (input.closest(".owner-date-control")) return;
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "owner-date-control";
+
+      const display = document.createElement("span");
+      display.className = "owner-date-readable";
+      display.setAttribute("aria-hidden", "true");
+
+      input.parentNode.insertBefore(wrapper, input);
+      wrapper.appendChild(input);
+      wrapper.appendChild(display);
+
+      const update = () => {
+        display.textContent = formatReadableDate(input.value);
+      };
+
+      input.addEventListener("change", update);
+      input.addEventListener("input", update);
+      update();
+    });
+  }
+
+  function formatReadableDate(value) {
+    if (!value) return "日付を選択";
+    const parts = String(value).split("-").map(Number);
+    if (parts.length !== 3 || parts.some(Number.isNaN)) return value;
+
+    const date = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]));
+    const weekday = ["日", "月", "火", "水", "木", "金", "土"][date.getUTCDay()];
+    return `${parts[0]}/${String(parts[1]).padStart(2, "0")}/${String(parts[2]).padStart(2, "0")}（${weekday}）`;
   }
 
   function bindEvents() {

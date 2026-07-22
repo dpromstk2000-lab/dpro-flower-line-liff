@@ -1067,3 +1067,105 @@
   .owner-dialog-body { padding: 13px; }
   .owner-main-footer { flex-direction: column; }
 }
+
+
+/* ==========================================================
+   FLOWER NEXT-6 R2
+   日付表示と左メニュー高さの最終調整
+   ========================================================== */
+
+@media (min-width: 981px) {
+  .owner-sidebar-head {
+    padding: 15px 14px 13px;
+  }
+
+  .owner-sidebar-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 13px;
+  }
+
+  .owner-side-nav {
+    gap: 2px;
+    padding: 10px 8px;
+  }
+
+  .owner-nav-button {
+    min-height: 41px;
+    padding: 6px 9px;
+  }
+
+  .owner-sidebar-quick {
+    gap: 1px;
+    padding: 9px 9px;
+  }
+
+  .owner-sidebar-quick a {
+    padding: 5px 3px;
+  }
+
+  .owner-sidebar-foot {
+    gap: 4px;
+    padding: 8px 8px 10px;
+  }
+
+  .owner-sidebar-action {
+    min-height: 34px;
+  }
+
+  .owner-sidebar-version {
+    padding-top: 4px;
+    font-size: .58rem;
+  }
+}
+
+/* Native date input text differs by browser/locale.
+   Keep the native picker, but show a consistent Japanese date above it. */
+.owner-date-control {
+  position: relative;
+  width: 100%;
+}
+
+.owner-date-control input[type="date"] {
+  width: 100%;
+  min-width: 0;
+  color: transparent;
+  caret-color: transparent;
+  font-variant-numeric: tabular-nums;
+}
+
+.owner-date-control input[type="date"]::-webkit-datetime-edit,
+.owner-date-control input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+.owner-date-control input[type="date"]::-webkit-datetime-edit-text,
+.owner-date-control input[type="date"]::-webkit-datetime-edit-month-field,
+.owner-date-control input[type="date"]::-webkit-datetime-edit-day-field,
+.owner-date-control input[type="date"]::-webkit-datetime-edit-year-field {
+  color: transparent;
+}
+
+.owner-date-readable {
+  position: absolute;
+  left: 14px;
+  right: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: .94rem;
+  font-weight: 650;
+  line-height: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+}
+
+.owner-date-control input[type="date"]:focus + .owner-date-readable {
+  color: var(--forest-2);
+}
+
+@media (max-width: 720px) {
+  .owner-date-readable {
+    font-size: .9rem;
+  }
+}
