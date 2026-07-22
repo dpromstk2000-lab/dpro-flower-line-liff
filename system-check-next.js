@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
-  const PAGE_VERSION = "FLOWER-NEXT-10-R1-SYSTEM-CHECK-20260722";
+  const PAGE_VERSION = "FLOWER-NEXT-10-R3-SYSTEM-CHECK-20260722";
 
   const state = {
     report: {
@@ -378,7 +378,14 @@ document.addEventListener("DOMContentLoaded", () => {
       ),
       rowFromCheck("database_rpc", "Supabase RPC", checks.database_rpc, detailBoolean(checks.database_rpc)),
       rowFromCheck("next_database_rpc", "FLOWER NEXT DB検査", checks.next_database_rpc, admin.next_database?.version || ""),
-      rowFromCheck("required_tables", "必須24テーブル", checks.required_tables, tableDetail(admin.worker_tests?.tables)),
+      rowFromCheck(
+        "required_tables",
+        "必須24テーブル",
+        checks.required_tables,
+        `${tableDetail(admin.worker_tests?.tables)}／問い合わせ約${
+          admin.worker_tests?.subrequest_budget?.current_estimate ?? "―"
+        }回`
+      ),
       rowFromCheck("private_photo_bucket", "Private写真Storage", checks.private_photo_bucket, admin.worker_tests?.private_photo_bucket || ""),
       rowFromCheck("public_product_bucket", "公開商品Storage", checks.public_product_bucket, admin.worker_tests?.public_product_bucket || ""),
       rowFromCheck("phone_normalization", "電話番号4形式の正規化", checks.phone_normalization, phoneDetail(admin.worker_tests?.phone_normalize_tests)),
@@ -391,7 +398,12 @@ document.addEventListener("DOMContentLoaded", () => {
       rowFromCheck("production_links", "制作タスクの商品リンク", checks.production_task_item_links, `${Number(integrity.unlinked_production_tasks || 0)}件の不整合`),
       rowFromCheck("order_item_links", "注文明細の注文リンク", checks.order_item_links, `${Number(integrity.orphan_order_items || 0)}件の不整合`),
       rowFromCheck("recipient_links", "届け先の注文リンク", checks.recipient_order_links, `${Number(integrity.orphan_order_recipients || 0)}件の不整合`),
-      rowFromCheck("default_addresses", "いつもの届け先重複防止", checks.default_address_integrity, `${Number(integrity.duplicate_default_address_customers?.length || 0)}顧客で重複`),
+      rowFromCheck(
+        "default_addresses",
+        "いつもの届け先重複防止",
+        checks.default_address_integrity,
+        defaultAddressIntegrityDetail(integrity)
+      ),
       rowFromCheck("categories", "商品カテゴリ", checks.product_categories, countDetail(admin.counts?.categories)),
       rowFromCheck("products", "公開・販売商品", checks.active_products, `有効 ${displayCount(admin.counts?.products)}／公開 ${displayCount(admin.counts?.published_products)}`),
       rowFromCheck("capacity", "制作受付上限", checks.production_capacity_rules, countDetail(admin.counts?.capacity_rules)),
@@ -760,6 +772,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function collectAllReadRows() {
     return [...state.readRows];
+  }
+
+  function defaultAddressIntegrityDetail(integrity) {
+    const error =
+      integrity?.check_errors?.integrity
+        ?.duplicate_default_addresses;
+
+    if (error?.message) {
+      return `検査処理エラー：${error.message}`;
+    }
+
+    const rows = integrity?.duplicate_default_address_customers;
+    if (!Array.isArray(rows)) {
+      return "検査結果を取得できませんでした";
+    }
+
+    return rows.length
+      ? `${rows.length}顧客で重複`
+      : "重複なし";
   }
 
   function detailBoolean(value) {
