@@ -3,73 +3,213 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#214c3b">
-  <title>システム検査｜DPRO フラワーショップ</title>
+  <meta name="theme-color" content="#17392d">
+  <meta name="description" content="DPROフラワーショップのWorker、Supabase、Storage、公開画面、注文・制作・配達・会員機能を一括検査します。">
+  <title>システム総合検査｜DPRO フラワーショップ</title>
   <link rel="stylesheet" href="common.css?v=FLOWER-15">
+  <link rel="stylesheet" href="system-check-next.css?v=FLOWER-NEXT-10">
 </head>
-<body>
-  <header class="topbar">
+<body class="check-next-body">
+  <header class="topbar check-topbar">
     <div class="topbar-inner">
       <div class="brand">
         <div class="brand-mark">✿</div>
         <div>
           <div class="brand-title">DPRO フラワーショップ</div>
-          <div class="brand-subtitle">注文・制作・配達管理 LINE</div>
+          <div class="brand-subtitle">DPRO NEXT 総合システム検査</div>
         </div>
       </div>
-      <nav class="topnav" id="topnav"></nav>
+      <nav class="topnav" id="topnav" aria-label="メインメニュー"></nav>
     </div>
   </header>
-  
-<main class="page-shell">
-  <section class="hero">
-    <div class="eyebrow">SYSTEM CHECK</div>
-    <h1>営業前の一括システム検査。</h1>
-    <p>Worker、Supabase、テーブル、30分枠、電話番号正規化、デモ保護を確認します。</p>
-  </section>
 
-  <section class="card">
-    <h2>管理コード</h2>
-    <div class="code-row">
-      <input id="adminCode" type="password" inputmode="numeric" placeholder="管理コード">
-      <button id="runCheck" class="btn btn-primary">一括検査</button>
-      <button id="clearCode" class="btn btn-danger">削除</button>
-    </div>
-    <div class="actions">
-      <button id="prepareDemo" class="btn btn-rose">デモデータを再生成</button>
-    </div>
-    <div id="alert" class="hidden"></div>
-  </section>
-
-  <section class="grid grid-2" style="margin-top:18px">
-    <article class="card">
-      <h2>公開API</h2>
-      <div id="publicChecks" class="check-list">
-        <div class="check-item"><span>Workerヘルス</span><span class="check-wait">未検査</span></div>
+  <main class="page-shell check-page-shell">
+    <section class="hero check-hero">
+      <div class="eyebrow">DPRO NEXT SYSTEM CHECK</div>
+      <h1>営業前に、すべてを一括確認。</h1>
+      <p>Worker、Supabase、Storage、商品、注文、制作、店頭受取、配達、マイページ、公開画面まで検査します。</p>
+      <div class="hero-actions">
+        <a class="btn btn-ghost" href="owner.html?demo=1">オーナー画面</a>
+        <a class="btn btn-ghost" href="staff.html?demo=1">スタッフ画面</a>
+        <a class="btn btn-rose" href="catalog.html">公開カタログ</a>
       </div>
-    </article>
-    <article class="card">
-      <h2>管理API・DB</h2>
-      <div id="adminChecks" class="check-list">
-        <div class="check-item"><span>管理API</span><span class="check-wait">未検査</span></div>
+    </section>
+
+    <section class="card check-control-card">
+      <div class="check-control-grid">
+        <div class="field">
+          <label for="adminCode">管理コード</label>
+          <input id="adminCode" type="password" inputmode="numeric" autocomplete="current-password" placeholder="管理コード">
+        </div>
+
+        <button id="runCheck" type="button" class="btn btn-primary check-main-button">
+          読取専用の総合検査
+        </button>
+
+        <button id="runIntegration" type="button" class="btn btn-rose check-main-button">
+          デモ実書込み検査
+        </button>
+
+        <button id="prepareDemo" type="button" class="btn btn-secondary check-main-button">
+          デモデータを再生成
+        </button>
+
+        <button id="clearCode" type="button" class="btn btn-danger check-main-button">
+          保存コード削除
+        </button>
       </div>
-    </article>
-  </section>
 
-  <section class="card" style="margin-top:18px">
-    <h2>検査結果JSON</h2>
-    <pre id="jsonResult" style="white-space:pre-wrap;overflow:auto;font-size:.78rem">未検査</pre>
-  </section>
+      <div class="check-explanation-grid">
+        <div>
+          <strong>読取専用の総合検査</strong>
+          <span>データは変更せず、API・DB・画面・整合性を検査します。</span>
+        </div>
+        <div>
+          <strong>デモ実書込み検査</strong>
+          <span>デモ環境だけで、一時データの追加・更新・削除とStorageを実測します。</span>
+        </div>
+      </div>
 
-  <footer class="footer">
-    <div>DPRO フラワーショップ system-check</div>
-    <div id="appVersion"></div>
-  </footer>
-</main>
+      <div id="alert" class="hidden" role="alert"></div>
+    </section>
+
+    <section id="overallCard" class="check-overall-card waiting">
+      <div class="check-overall-icon" id="overallIcon">⏳</div>
+      <div class="check-overall-main">
+        <div class="eyebrow check-dark-eyebrow">OVERALL STATUS</div>
+        <h2 id="overallTitle">まだ検査していません</h2>
+        <p id="overallMessage">「読取専用の総合検査」を押してください。</p>
+      </div>
+      <div class="check-overall-stats">
+        <div><span>合格</span><strong id="passedCount">0</strong></div>
+        <div><span>不合格</span><strong id="failedCount">0</strong></div>
+        <div><span>対象</span><strong id="totalCount">0</strong></div>
+      </div>
+    </section>
+
+    <section class="check-meta-grid">
+      <article class="check-meta-card">
+        <span>Workerバージョン</span>
+        <strong id="workerVersion">未取得</strong>
+      </article>
+      <article class="check-meta-card">
+        <span>店舗</span>
+        <strong id="shopName">未取得</strong>
+      </article>
+      <article class="check-meta-card">
+        <span>最終検査</span>
+        <strong id="lastCheckedAt">未検査</strong>
+      </article>
+      <article class="check-meta-card">
+        <span>処理時間</span>
+        <strong id="elapsedTime">―</strong>
+      </article>
+    </section>
+
+    <section class="check-dashboard-grid">
+      <article class="card check-group-card">
+        <header class="check-group-head">
+          <div>
+            <div class="eyebrow check-dark-eyebrow">PLATFORM</div>
+            <h2>Worker・DB・Storage</h2>
+          </div>
+          <span id="platformBadge" class="check-group-badge wait">未検査</span>
+        </header>
+        <div id="platformChecks" class="check-list-next">
+          <div class="check-empty-row">検査待ち</div>
+        </div>
+      </article>
+
+      <article class="card check-group-card">
+        <header class="check-group-head">
+          <div>
+            <div class="eyebrow check-dark-eyebrow">NEXT DATABASE</div>
+            <h2>商品・制作・配達・データ整合性</h2>
+          </div>
+          <span id="dataBadge" class="check-group-badge wait">未検査</span>
+        </header>
+        <div id="dataChecks" class="check-list-next">
+          <div class="check-empty-row">検査待ち</div>
+        </div>
+      </article>
+
+      <article class="card check-group-card">
+        <header class="check-group-head">
+          <div>
+            <div class="eyebrow check-dark-eyebrow">API</div>
+            <h2>公開・管理・会員API</h2>
+          </div>
+          <span id="apiBadge" class="check-group-badge wait">未検査</span>
+        </header>
+        <div id="apiChecks" class="check-list-next">
+          <div class="check-empty-row">検査待ち</div>
+        </div>
+      </article>
+
+      <article class="card check-group-card">
+        <header class="check-group-head">
+          <div>
+            <div class="eyebrow check-dark-eyebrow">PAGES</div>
+            <h2>公開画面・管理画面</h2>
+          </div>
+          <span id="pageBadge" class="check-group-badge wait">未検査</span>
+        </header>
+        <div id="pageChecks" class="check-list-next">
+          <div class="check-empty-row">検査待ち</div>
+        </div>
+      </article>
+    </section>
+
+    <section class="card check-count-card">
+      <div class="check-group-head">
+        <div>
+          <div class="eyebrow check-dark-eyebrow">CURRENT DATA</div>
+          <h2>現在のデータ件数</h2>
+        </div>
+      </div>
+      <div id="dataCounts" class="check-count-grid">
+        <div class="check-count-item"><span>未取得</span><strong>―</strong></div>
+      </div>
+    </section>
+
+    <section class="card check-integration-card">
+      <header class="check-group-head">
+        <div>
+          <div class="eyebrow check-dark-eyebrow">SAFE WRITE TEST</div>
+          <h2>デモ実書込み検査結果</h2>
+          <p>一時データは検査終了時に自動削除します。本番店舗では実行できません。</p>
+        </div>
+        <span id="integrationBadge" class="check-group-badge wait">未実施</span>
+      </header>
+      <div id="integrationChecks" class="check-list-next">
+        <div class="check-empty-row">「デモ実書込み検査」を押すと実行されます。</div>
+      </div>
+    </section>
+
+    <section class="card check-json-card">
+      <header class="check-group-head">
+        <div>
+          <div class="eyebrow check-dark-eyebrow">DIAGNOSTIC JSON</div>
+          <h2>検査結果JSON</h2>
+        </div>
+        <div class="check-json-actions">
+          <button id="copyJson" type="button" class="btn btn-secondary btn-small">JSONをコピー</button>
+          <button id="downloadJson" type="button" class="btn btn-secondary btn-small">JSONを保存</button>
+        </div>
+      </header>
+      <pre id="jsonResult">未検査</pre>
+    </section>
+
+    <footer class="footer check-footer">
+      <div>DPRO フラワーショップ DPRO NEXT system-check</div>
+      <div id="appVersion"></div>
+    </footer>
+  </main>
 
   <nav class="mobile-bottom-nav" id="mobileNav"></nav>
+
   <script src="config.js?v=FLOWER-15"></script>
   <script src="common.js?v=FLOWER-15"></script>
-  <script src="system-check-v9.js"></script>
+  <script src="system-check-next.js?v=FLOWER-NEXT-10"></script>
 </body>
 </html>
