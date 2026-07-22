@@ -3,67 +3,209 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#214c3b">
+  <meta name="theme-color" content="#17392d">
+  <meta name="description" content="DPROフラワーショップの制作・店頭受取・配達を現場スタッフが操作する専用画面です。">
   <title>スタッフ作業｜DPRO フラワーショップ</title>
   <link rel="stylesheet" href="common.css?v=FLOWER-15">
+  <link rel="stylesheet" href="staff-next.css?v=FLOWER-NEXT-7">
 </head>
-<body>
-  <header class="topbar">
+<body class="staff-next-body">
+  <header class="topbar staff-topbar">
     <div class="topbar-inner">
       <div class="brand">
         <div class="brand-mark">✿</div>
         <div>
           <div class="brand-title">DPRO フラワーショップ</div>
-          <div class="brand-subtitle">注文・制作・配達管理 LINE</div>
+          <div class="brand-subtitle">制作・店頭受取・配達 現場画面</div>
         </div>
       </div>
-      <nav class="topnav" id="topnav"></nav>
+      <nav class="topnav" id="topnav" aria-label="メインメニュー"></nav>
     </div>
   </header>
-  
-<main class="page-shell">
-  <section id="adminLock" class="card admin-lock">
-    <h2>スタッフ用作業画面</h2>
-    <div class="code-row">
-      <input id="adminCode" type="password" inputmode="numeric" placeholder="管理コード">
-      <button id="loginButton" class="btn btn-primary">開く</button>
-      <button id="clearCodeButton" class="btn btn-danger">削除</button>
-    </div>
-    <div id="loginAlert" class="hidden"></div>
-  </section>
 
-  <section id="app" class="hidden">
-    <section class="hero">
-      <div class="eyebrow">STAFF TASKS</div>
-      <h1>制作と配達、今日やることだけ。</h1>
-      <p>制作開始・完成写真・完成・出発・配達完了をスタッフ端末から登録します。</p>
+  <main class="page-shell staff-page-shell">
+    <section id="adminLock" class="staff-login-shell">
+      <article class="card admin-lock staff-login-card">
+        <div class="staff-login-mark">🧺</div>
+        <div class="eyebrow staff-dark-eyebrow">FIELD WORK</div>
+        <h1>スタッフ作業画面</h1>
+        <p>制作・店頭受取・配達の、今日必要な操作だけを表示します。</p>
+        <div class="code-row staff-login-code-row">
+          <input
+            id="adminCode"
+            type="password"
+            inputmode="numeric"
+            autocomplete="current-password"
+            placeholder="管理コード"
+            aria-label="管理コード"
+          >
+          <button id="loginButton" type="button" class="btn btn-primary">作業画面を開く</button>
+          <button id="clearCodeButton" type="button" class="btn btn-danger">保存コード削除</button>
+        </div>
+        <div id="loginAlert" class="hidden" role="alert"></div>
+      </article>
     </section>
 
-    <div class="toolbar">
-      <div class="field">
-        <label for="taskDate">表示日</label>
-        <input id="taskDate" type="date">
+    <section id="staffApp" class="hidden">
+      <section class="hero staff-hero">
+        <div class="eyebrow">TODAY'S FIELD WORK</div>
+        <h1>今日やることを、順番に。</h1>
+        <p>制作工程、完成写真、店頭での引渡し、配達完了までを大きなボタンで記録します。</p>
+        <div class="hero-actions">
+          <a class="btn btn-ghost" href="owner.html?demo=1">オーナー画面</a>
+          <button id="logoutButton" type="button" class="btn btn-rose">作業画面を閉じる</button>
+        </div>
+      </section>
+
+      <section class="card staff-control-card">
+        <div class="staff-control-row">
+          <div class="field staff-date-field">
+            <label for="taskDate">表示日</label>
+            <input id="taskDate" type="date">
+          </div>
+          <button id="reloadButton" type="button" class="btn btn-primary">この日の作業を更新</button>
+          <label class="staff-inline-check">
+            <input id="showCompleted" type="checkbox">
+            <span>完了済みも表示</span>
+          </label>
+          <span id="lastUpdatedAt" class="staff-last-updated">未更新</span>
+        </div>
+      </section>
+
+      <div id="pageAlert" class="hidden staff-page-alert" role="alert"></div>
+
+      <section class="staff-summary-grid" aria-label="作業件数">
+        <button type="button" class="staff-summary-card production active" data-mode-button="production">
+          <span class="staff-summary-icon">💐</span>
+          <span class="staff-summary-copy">
+            <small>制作</small>
+            <strong id="productionCount">0</strong>
+            <em>件</em>
+          </span>
+        </button>
+        <button type="button" class="staff-summary-card pickup" data-mode-button="pickup">
+          <span class="staff-summary-icon">🛍️</span>
+          <span class="staff-summary-copy">
+            <small>店頭受取</small>
+            <strong id="pickupCount">0</strong>
+            <em>件</em>
+          </span>
+        </button>
+        <button type="button" class="staff-summary-card delivery" data-mode-button="delivery">
+          <span class="staff-summary-icon">🚚</span>
+          <span class="staff-summary-copy">
+            <small>配達</small>
+            <strong id="deliveryCount">0</strong>
+            <em>件</em>
+          </span>
+        </button>
+      </section>
+
+      <section class="staff-mode-tabs" aria-label="作業種別">
+        <button type="button" class="staff-mode-tab active" data-mode-button="production">
+          <span>💐</span>制作
+        </button>
+        <button type="button" class="staff-mode-tab" data-mode-button="pickup">
+          <span>🛍️</span>店頭受取
+        </button>
+        <button type="button" class="staff-mode-tab" data-mode-button="delivery">
+          <span>🚚</span>配達
+        </button>
+      </section>
+
+      <section id="mode-production" class="staff-mode-panel active" data-mode-panel="production">
+        <div class="staff-section-heading">
+          <div>
+            <div class="eyebrow staff-dark-eyebrow">PRODUCTION</div>
+            <h2>制作作業</h2>
+            <p>希望内容を確認し、制作開始・写真・最終確認・完成の順に進めます。</p>
+          </div>
+          <div id="productionStatusSummary" class="staff-status-summary"></div>
+        </div>
+        <div id="productionTasks" class="staff-task-list">
+          <div class="card loading">制作タスクを読み込んでいます…</div>
+        </div>
+      </section>
+
+      <section id="mode-pickup" class="staff-mode-panel" data-mode-panel="pickup">
+        <div class="staff-section-heading">
+          <div>
+            <div class="eyebrow staff-dark-eyebrow">STORE PICKUP</div>
+            <h2>店頭受取</h2>
+            <p>完成した商品とお客様を確認し、引渡し完了を登録します。</p>
+          </div>
+          <div id="pickupStatusSummary" class="staff-status-summary"></div>
+        </div>
+        <div id="pickupTasks" class="staff-task-grid">
+          <div class="card loading">店頭受取を読み込んでいます…</div>
+        </div>
+      </section>
+
+      <section id="mode-delivery" class="staff-mode-panel" data-mode-panel="delivery">
+        <div class="staff-section-heading">
+          <div>
+            <div class="eyebrow staff-dark-eyebrow">DELIVERY</div>
+            <h2>配達作業</h2>
+            <p>梱包・積込・出発・到着・完了を順番に記録します。</p>
+          </div>
+          <div id="deliveryStatusSummary" class="staff-status-summary"></div>
+        </div>
+        <div id="deliveryTasks" class="staff-task-list">
+          <div class="card loading">配達タスクを読み込んでいます…</div>
+        </div>
+      </section>
+
+      <footer class="footer staff-footer">
+        <div>DPRO フラワーショップ 現場スタッフ画面</div>
+        <div id="appVersion"></div>
+      </footer>
+    </section>
+  </main>
+
+  <nav id="mobileModeNav" class="staff-mobile-mode-nav hidden" aria-label="作業種別">
+    <button type="button" class="active" data-mode-button="production">
+      <span>💐</span>制作
+      <b id="mobileProductionCount">0</b>
+    </button>
+    <button type="button" data-mode-button="pickup">
+      <span>🛍️</span>受取
+      <b id="mobilePickupCount">0</b>
+    </button>
+    <button type="button" data-mode-button="delivery">
+      <span>🚚</span>配達
+      <b id="mobileDeliveryCount">0</b>
+    </button>
+  </nav>
+
+  <dialog id="problemDialog" class="staff-dialog">
+    <form id="problemForm" method="dialog" class="staff-dialog-shell">
+      <header class="staff-dialog-header">
+        <div>
+          <div class="eyebrow staff-dark-eyebrow">PROBLEM REPORT</div>
+          <h2 id="problemDialogTitle">問題を記録</h2>
+        </div>
+        <button id="closeProblemDialog" type="button" class="staff-dialog-close" aria-label="閉じる">×</button>
+      </header>
+      <div class="staff-dialog-body">
+        <input id="problemTaskType" type="hidden">
+        <input id="problemTaskId" type="hidden">
+        <input id="problemTaskVersion" type="hidden">
+        <input id="problemTargetStatus" type="hidden">
+        <div class="field">
+          <label class="required" for="problemReason">状況・理由</label>
+          <textarea id="problemReason" required placeholder="例：ご不在のため電話しました。持ち戻ります。"></textarea>
+        </div>
+        <div id="problemAlert" class="hidden" role="alert"></div>
       </div>
-      <button id="reload" class="btn btn-primary">更新</button>
-    </div>
-    <div id="alert" class="hidden"></div>
+      <footer class="staff-dialog-footer">
+        <button id="cancelProblemDialog" type="button" class="btn btn-secondary">戻る</button>
+        <button id="saveProblemButton" type="submit" class="btn btn-primary">記録する</button>
+      </footer>
+    </form>
+  </dialog>
 
-    <h2 class="section-title">制作タスク</h2>
-    <div id="productionTasks" class="grid grid-2"><div class="card loading">読み込み中…</div></div>
-
-    <h2 class="section-title">配達タスク</h2>
-    <div id="deliveryTasks" class="grid grid-2"><div class="card loading">読み込み中…</div></div>
-
-    <footer class="footer">
-      <div>DPRO フラワーショップ スタッフ作業</div>
-      <div id="appVersion"></div>
-    </footer>
-  </section>
-</main>
-
-  <nav class="mobile-bottom-nav" id="mobileNav"></nav>
   <script src="config.js?v=FLOWER-15"></script>
   <script src="common.js?v=FLOWER-15"></script>
-  <script src="staff-v15.js"></script>
+  <script src="staff-next.js?v=FLOWER-NEXT-7"></script>
 </body>
 </html>
