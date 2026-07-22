@@ -3,113 +3,342 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#214c3b">
+  <meta name="theme-color" content="#17392d">
+  <meta name="description" content="DPROフラワーショップの注文・制作・受取・配達・商品・顧客を一元管理するオーナーPC画面です。">
   <title>オーナー管理｜DPRO フラワーショップ</title>
   <link rel="stylesheet" href="common.css?v=FLOWER-15">
+  <link rel="stylesheet" href="owner-next.css?v=FLOWER-NEXT-6">
 </head>
-<body>
-  <header class="topbar">
+<body class="owner-next-body">
+  <header class="topbar owner-public-topbar">
     <div class="topbar-inner">
       <div class="brand">
         <div class="brand-mark">✿</div>
         <div>
           <div class="brand-title">DPRO フラワーショップ</div>
-          <div class="brand-subtitle">注文・制作・配達管理 LINE</div>
+          <div class="brand-subtitle">DPRO NEXT オーナーPC管理</div>
         </div>
       </div>
-      <nav class="topnav" id="topnav"></nav>
+      <nav class="topnav" id="topnav" aria-label="公開画面メニュー"></nav>
     </div>
   </header>
-  
-<main class="page-shell">
-  <section id="adminLock" class="card admin-lock">
-    <h2>オーナー管理画面</h2>
-    <p>管理コードを入力してください。デモURLでは自動設定されます。</p>
-    <div class="code-row">
-      <input id="adminCode" type="password" inputmode="numeric" placeholder="管理コード">
-      <button id="loginButton" class="btn btn-primary">開く</button>
-      <button id="clearCodeButton" class="btn btn-danger">削除</button>
-    </div>
-    <div id="loginAlert" class="hidden"></div>
-  </section>
 
-  <section id="adminApp" class="hidden">
-    <section class="hero">
-      <div class="eyebrow">OWNER DASHBOARD</div>
-      <h1>今日の注文・制作・配達を一画面で。</h1>
-      <p>電話・店頭・LINEの注文をまとめて管理します。</p>
-      <div class="hero-actions">
-        <a class="btn btn-ghost" href="counter.html?demo=1">電話・店頭注文</a>
-        <a class="btn btn-ghost" href="owner-ipad.html?demo=1">iPad受付画面</a>
-        <a class="btn btn-rose" href="system-check.html?demo=1">システム検査</a>
-      </div>
+  <main id="ownerRoot">
+    <section id="adminLock" class="owner-login-shell">
+      <article class="card admin-lock owner-login-card">
+        <div class="owner-login-mark">✿</div>
+        <div class="eyebrow owner-dark-eyebrow">OWNER CONTROL</div>
+        <h1>オーナー管理画面</h1>
+        <p>注文・制作・店頭受取・配達・商品カタログを一画面で管理します。</p>
+        <div class="code-row owner-login-code-row">
+          <input id="adminCode" type="password" inputmode="numeric" autocomplete="current-password" placeholder="管理コード" aria-label="管理コード">
+          <button id="loginButton" type="button" class="btn btn-primary">管理画面を開く</button>
+          <button id="clearCodeButton" type="button" class="btn btn-danger">保存コード削除</button>
+        </div>
+        <div id="loginAlert" class="hidden" role="alert"></div>
+      </article>
     </section>
 
-    <div id="pageAlert" class="hidden"></div>
+    <section id="adminApp" class="owner-app hidden">
+      <button id="mobileSidebarButton" type="button" class="owner-mobile-menu-button" aria-controls="ownerSidebar" aria-expanded="false">☰ メニュー</button>
+      <div id="sidebarBackdrop" class="owner-sidebar-backdrop hidden"></div>
 
-    <section class="grid grid-4">
-      <article class="card stat"><span class="stat-label">本日の注文</span><span class="stat-value" id="statToday">0</span></article>
-      <article class="card stat"><span class="stat-label">制作未完了</span><span class="stat-value" id="statProduction">0</span></article>
-      <article class="card stat"><span class="stat-label">配達未完了</span><span class="stat-value" id="statDelivery">0</span></article>
-      <article class="card stat"><span class="stat-label">未入金</span><span class="stat-value" id="statUnpaid">0</span></article>
+      <aside id="ownerSidebar" class="owner-sidebar" aria-label="管理メニュー">
+        <div class="owner-sidebar-head">
+          <div class="owner-sidebar-logo">✿</div>
+          <div><strong>DPRO FLOWER</strong><span>NEXT OWNER</span></div>
+        </div>
+
+        <nav class="owner-side-nav">
+          <button type="button" class="owner-nav-button active" data-panel="dashboard"><span class="owner-nav-icon">🏠</span><span>今日の状況</span></button>
+          <button type="button" class="owner-nav-button" data-panel="orders"><span class="owner-nav-icon">🧾</span><span>注文管理</span><span id="navOrderBadge" class="owner-nav-badge hidden">0</span></button>
+          <button type="button" class="owner-nav-button" data-panel="production"><span class="owner-nav-icon">💐</span><span>制作管理</span><span id="navProductionBadge" class="owner-nav-badge hidden">0</span></button>
+          <button type="button" class="owner-nav-button" data-panel="pickup"><span class="owner-nav-icon">🛍️</span><span>店頭受取</span></button>
+          <button type="button" class="owner-nav-button" data-panel="delivery"><span class="owner-nav-icon">🚚</span><span>配達管理</span><span id="navDeliveryBadge" class="owner-nav-badge hidden">0</span></button>
+          <button type="button" class="owner-nav-button" data-panel="products"><span class="owner-nav-icon">🌷</span><span>商品カタログ</span></button>
+          <button type="button" class="owner-nav-button" data-panel="customers"><span class="owner-nav-icon">👥</span><span>顧客管理</span></button>
+          <button type="button" class="owner-nav-button" data-panel="capacity"><span class="owner-nav-icon">📊</span><span>制作受付上限</span></button>
+          <button type="button" class="owner-nav-button" data-panel="system"><span class="owner-nav-icon">⚙️</span><span>関連画面・検査</span></button>
+        </nav>
+
+        <div class="owner-sidebar-quick">
+          <div class="owner-sidebar-label">すぐに開く</div>
+          <a href="counter.html?demo=1">電話・店頭注文</a>
+          <a href="owner-ipad.html?demo=1">iPad受付画面</a>
+          <a href="staff.html?demo=1">スタッフ作業画面</a>
+          <a href="catalog.html" target="_blank" rel="noopener">公開カタログ</a>
+        </div>
+
+        <div class="owner-sidebar-foot">
+          <button id="logoutButton" type="button" class="owner-sidebar-action">管理画面を閉じる</button>
+          <button id="deleteSavedCodeButton" type="button" class="owner-sidebar-action danger">保存コードを削除</button>
+          <div id="sidebarVersion" class="owner-sidebar-version"></div>
+        </div>
+      </aside>
+
+      <div class="owner-main">
+        <header class="owner-main-header">
+          <div>
+            <div id="panelEyebrow" class="eyebrow owner-dark-eyebrow">OWNER DASHBOARD</div>
+            <h1 id="panelTitle">今日の状況</h1>
+            <p id="panelDescription">注文・制作・受取・配達の状況を確認します。</p>
+          </div>
+          <div class="owner-main-actions">
+            <span id="lastUpdatedAt" class="owner-updated-at">未更新</span>
+            <button id="refreshCurrentPanel" type="button" class="btn btn-secondary">この画面を更新</button>
+          </div>
+        </header>
+
+        <div id="pageAlert" class="hidden owner-page-alert" role="alert"></div>
+
+        <section id="panel-dashboard" class="owner-panel active" data-owner-panel="dashboard">
+          <div class="owner-filter-bar">
+            <div class="field owner-filter-date"><label for="dashboardDate">表示日</label><input id="dashboardDate" type="date"></div>
+            <button id="reloadDashboard" type="button" class="btn btn-primary">この日の状況を表示</button>
+          </div>
+
+          <div class="owner-stat-grid">
+            <article class="owner-stat-card primary"><span>本日の注文</span><strong id="statToday">0</strong><small>希望日時が表示日の注文</small></article>
+            <article class="owner-stat-card"><span>対応中の注文</span><strong id="statOpenOrders">0</strong><small>未完了・未キャンセル</small></article>
+            <article class="owner-stat-card production"><span>制作未完了</span><strong id="statProduction">0</strong><small>制作タスク</small></article>
+            <article class="owner-stat-card delivery"><span>配達未完了</span><strong id="statDelivery">0</strong><small>配達タスク</small></article>
+            <article class="owner-stat-card warning"><span>未入金</span><strong id="statUnpaid">0</strong><small>未払い・一部入金</small></article>
+            <article class="owner-stat-card sales"><span>本日の売上目安</span><strong id="statSales">¥0</strong><small>キャンセルを除く</small></article>
+          </div>
+
+          <section class="owner-content-card">
+            <div class="owner-section-heading">
+              <div><h2>今日の注文</h2><p>希望日時順に、受取方法と現在の状態を表示します。</p></div>
+              <button type="button" class="btn btn-secondary btn-small" data-open-panel="orders">注文管理を開く</button>
+            </div>
+            <div id="todayOrders" class="owner-table-area"><div class="loading">読み込み中…</div></div>
+          </section>
+
+          <section class="owner-dashboard-links">
+            <button type="button" class="owner-dashboard-link production" data-open-panel="production"><span>💐</span><strong>制作ボード</strong><small>花材確認から完成まで</small></button>
+            <button type="button" class="owner-dashboard-link pickup" data-open-panel="pickup"><span>🛍️</span><strong>店頭受取</strong><small>完成・受取待ちを確認</small></button>
+            <button type="button" class="owner-dashboard-link delivery" data-open-panel="delivery"><span>🚚</span><strong>配達ボード</strong><small>梱包から配達完了まで</small></button>
+            <button type="button" class="owner-dashboard-link products" data-open-panel="products"><span>🌷</span><strong>商品カタログ</strong><small>公開・売り切れ・写真管理</small></button>
+          </section>
+        </section>
+
+        <section id="panel-orders" class="owner-panel" data-owner-panel="orders">
+          <div class="owner-filter-bar owner-filter-wrap">
+            <div class="field"><label for="orderStatusFilter">ステータス</label>
+              <select id="orderStatusFilter">
+                <option value="">すべて</option><option value="new">新規受付</option><option value="reviewing">内容確認中</option><option value="quoted">見積提示</option><option value="customer_waiting">お客様確認待ち</option><option value="confirmed">注文確定</option><option value="payment_waiting">入金待ち</option><option value="production_waiting">制作待ち</option><option value="producing">制作中</option><option value="completed">完成</option><option value="pickup_waiting">店頭受取待ち</option><option value="delivery_preparing">配達準備</option><option value="delivering">配達中</option><option value="delivered">配達完了</option><option value="handed_over">引渡し完了</option><option value="cancelled">キャンセル</option>
+              </select>
+            </div>
+            <div class="field owner-filter-search"><label for="orderQuery">受付番号・備考</label><input id="orderQuery" type="search" placeholder="検索"></div>
+            <div class="field"><label for="orderFrom">開始日</label><input id="orderFrom" type="date"></div>
+            <div class="field"><label for="orderTo">終了日</label><input id="orderTo" type="date"></div>
+            <button id="searchOrders" type="button" class="btn btn-primary">注文を検索</button>
+          </div>
+          <div id="orderResultCount" class="owner-result-count"></div>
+          <div id="ordersTable" class="owner-order-list"><div class="loading">読み込み中…</div></div>
+        </section>
+
+        <section id="panel-production" class="owner-panel" data-owner-panel="production">
+          <div class="owner-filter-bar">
+            <div class="field owner-filter-date"><label for="productionDate">制作期限・受取日</label><input id="productionDate" type="date"></div>
+            <div class="field"><label for="productionStatusFilter">制作工程</label>
+              <select id="productionStatusFilter">
+                <option value="">すべて</option><option value="materials_check">花材確認</option><option value="waiting">制作待ち</option><option value="assigned">担当決定</option><option value="producing">制作中</option><option value="photo_pending">完成写真待ち</option><option value="quality_check">最終確認</option><option value="completed">制作完了</option><option value="hold">保留</option><option value="cancelled">中止</option>
+              </select>
+            </div>
+            <button id="reloadProduction" type="button" class="btn btn-primary">制作ボードを表示</button>
+          </div>
+          <div id="productionSummary" class="owner-board-summary"></div>
+          <div id="productionBoard" class="owner-kanban"><div class="loading">読み込み中…</div></div>
+        </section>
+
+        <section id="panel-pickup" class="owner-panel" data-owner-panel="pickup">
+          <div class="owner-filter-bar">
+            <div class="field owner-filter-date"><label for="pickupDate">受取日</label><input id="pickupDate" type="date"></div>
+            <div class="field"><label for="pickupStatusFilter">表示状態</label>
+              <select id="pickupStatusFilter"><option value="">完成前を含むすべて</option><option value="pickup_waiting">店頭受取待ち</option><option value="handed_over">引渡し完了</option></select>
+            </div>
+            <button id="reloadPickup" type="button" class="btn btn-primary">店頭受取を表示</button>
+          </div>
+          <div id="pickupBoard" class="owner-pickup-grid"><div class="loading">読み込み中…</div></div>
+        </section>
+
+        <section id="panel-delivery" class="owner-panel" data-owner-panel="delivery">
+          <div class="owner-filter-bar">
+            <div class="field owner-filter-date"><label for="deliveryDate">配達日</label><input id="deliveryDate" type="date"></div>
+            <div class="field"><label for="deliveryStatusFilter">配達工程</label>
+              <select id="deliveryStatusFilter">
+                <option value="">すべて</option><option value="waiting">準備待ち</option><option value="assigned">担当決定</option><option value="preparing">配達準備</option><option value="packed">梱包済み</option><option value="loaded">積込済み</option><option value="departed">出発</option><option value="arrived">到着</option><option value="delivered">配達完了</option><option value="absent">不在</option><option value="failed">配達不能</option><option value="returned">持ち戻り</option><option value="cancelled">中止</option>
+              </select>
+            </div>
+            <button id="reloadDelivery" type="button" class="btn btn-primary">配達ボードを表示</button>
+          </div>
+          <div id="deliverySummary" class="owner-board-summary"></div>
+          <div id="deliveryBoard" class="owner-delivery-list"><div class="loading">読み込み中…</div></div>
+        </section>
+
+        <section id="panel-products" class="owner-panel" data-owner-panel="products">
+          <div class="owner-filter-bar owner-filter-wrap">
+            <div class="field owner-filter-search"><label for="productQuery">商品名・商品コード</label><input id="productQuery" type="search" placeholder="商品を検索"></div>
+            <div class="field"><label for="productPublishedFilter">公開状態</label><select id="productPublishedFilter"><option value="">すべて</option><option value="true">公開</option><option value="false">非公開</option></select></div>
+            <button id="searchProducts" type="button" class="btn btn-secondary">検索</button>
+            <button id="newProductButton" type="button" class="btn btn-primary">新しい商品を登録</button>
+            <button id="toggleCategoryManager" type="button" class="btn btn-secondary">カテゴリ管理</button>
+          </div>
+
+          <section id="categoryManager" class="owner-content-card hidden">
+            <div class="owner-section-heading"><div><h2>カテゴリ管理</h2><p>公開カタログのカテゴリ名・順番・公開状態を管理します。</p></div></div>
+            <div id="categoryList" class="owner-category-list"></div>
+            <form id="newCategoryForm" class="owner-category-create">
+              <div class="field"><label for="newCategoryName">カテゴリ名</label><input id="newCategoryName" required placeholder="例：プリザーブドフラワー"></div>
+              <div class="field"><label for="newCategoryCode">カテゴリコード</label><input id="newCategoryCode" required placeholder="例：preserved"></div>
+              <div class="field"><label for="newCategoryIcon">アイコン</label><input id="newCategoryIcon" value="✿" maxlength="20"></div>
+              <div class="field"><label for="newCategoryOrder">表示順</label><input id="newCategoryOrder" type="number" min="0" value="100"></div>
+              <button type="submit" class="btn btn-primary">カテゴリ追加</button>
+            </form>
+          </section>
+
+          <div id="productResultCount" class="owner-result-count"></div>
+          <div id="productAdminGrid" class="owner-product-admin-grid"><div class="loading">読み込み中…</div></div>
+        </section>
+
+        <section id="panel-customers" class="owner-panel" data-owner-panel="customers">
+          <div class="owner-filter-bar">
+            <div class="field owner-filter-search"><label for="customerQuery">氏名・電話番号・顧客番号・会社名</label><input id="customerQuery" type="search" placeholder="例：09012345678"></div>
+            <button id="searchCustomers" type="button" class="btn btn-primary">顧客を検索</button>
+          </div>
+          <div class="owner-customer-layout">
+            <div id="customerResults" class="owner-customer-results"><div class="owner-empty">検索文字を入力してください。</div></div>
+            <div id="customerDetail" class="owner-content-card owner-customer-detail"><div class="owner-empty">左の検索結果から顧客を選択してください。</div></div>
+          </div>
+        </section>
+
+        <section id="panel-capacity" class="owner-panel" data-owner-panel="capacity">
+          <div class="owner-capacity-intro"><div><h2>制作ポイントによる受付上限</h2><p>同じ30分枠でも、商品ごとの制作負担に合わせて受付数を調整できます。</p></div></div>
+
+          <section class="owner-content-card">
+            <div class="owner-section-heading"><div><h2>日付別の特別設定</h2><p>母の日・卒業シーズン・臨時休業など、指定日の上限を変更します。</p></div></div>
+            <form id="capacityOverrideForm" class="owner-capacity-form">
+              <div class="field"><label for="capacityDate">対象日</label><input id="capacityDate" type="date" required></div>
+              <div class="field"><label for="capacitySlot">時間</label><input id="capacitySlot" type="time" step="1800"><span class="help">空欄なら終日設定</span></div>
+              <div class="field"><label for="capacityMaxPoints">最大制作ポイント</label><input id="capacityMaxPoints" type="number" min="0" value="20"></div>
+              <div class="field"><label for="capacityMaxOrders">最大注文数</label><input id="capacityMaxOrders" type="number" min="0" value="10"></div>
+              <label class="owner-check-row"><input id="capacityClosed" type="checkbox"><span>この日・時間帯の受付を停止</span></label>
+              <div class="field owner-capacity-reason"><label for="capacityReason">理由・店舗メモ</label><input id="capacityReason" placeholder="例：母の日の受付上限"></div>
+              <button type="submit" class="btn btn-primary">特別設定を保存</button>
+            </form>
+            <div id="capacityOverrides" class="owner-capacity-list"></div>
+          </section>
+
+          <section class="owner-content-card">
+            <div class="owner-section-heading"><div><h2>通常の曜日・時間別設定</h2><p>毎週繰り返す制作上限を30分単位で登録します。</p></div></div>
+            <form id="capacityRuleForm" class="owner-capacity-form">
+              <div class="field"><label for="capacityWeekday">曜日</label><select id="capacityWeekday"><option value="0">日曜日</option><option value="1">月曜日</option><option value="2">火曜日</option><option value="3">水曜日</option><option value="4">木曜日</option><option value="5">金曜日</option><option value="6">土曜日</option></select></div>
+              <div class="field"><label for="capacityRuleTime">時間</label><input id="capacityRuleTime" type="time" step="1800" required value="10:00"></div>
+              <div class="field"><label for="capacityRulePoints">最大制作ポイント</label><input id="capacityRulePoints" type="number" min="0" required value="20"></div>
+              <div class="field"><label for="capacityRuleOrders">最大注文数</label><input id="capacityRuleOrders" type="number" min="0" required value="10"></div>
+              <label class="owner-check-row"><input id="capacityRuleActive" type="checkbox" checked><span>この設定を有効にする</span></label>
+              <button type="submit" class="btn btn-primary">通常設定を保存</button>
+            </form>
+            <div id="capacityRules" class="owner-capacity-table-wrap"></div>
+          </section>
+        </section>
+
+        <section id="panel-system" class="owner-panel" data-owner-panel="system">
+          <div class="owner-system-links">
+            <a class="owner-system-link" href="counter.html?demo=1"><span>☎️</span><strong>電話・店頭注文</strong><small>既存顧客検索から注文登録</small></a>
+            <a class="owner-system-link" href="owner-ipad.html?demo=1"><span>📱</span><strong>iPad受付画面</strong><small>店頭で大きなボタン操作</small></a>
+            <a class="owner-system-link" href="staff.html?demo=1"><span>🧺</span><strong>スタッフ作業画面</strong><small>制作・配達の現場操作</small></a>
+            <a class="owner-system-link" href="catalog.html" target="_blank" rel="noopener"><span>🌷</span><strong>公開カタログ</strong><small>お客様に見える商品ページ</small></a>
+            <a class="owner-system-link" href="system-check.html?demo=1"><span>🩺</span><strong>検査専用画面</strong><small>営業前の一括チェック</small></a>
+          </div>
+          <section class="owner-content-card">
+            <div class="owner-section-heading"><div><h2>この画面からAPI検査</h2><p>Worker、Supabase、NEXT追加テーブル、Storageを確認します。</p></div><button id="runSystemCheck" type="button" class="btn btn-primary">システム検査を実行</button></div>
+            <div id="systemCheckResult" class="owner-system-check-result"><div class="owner-empty">「システム検査を実行」を押してください。</div></div>
+          </section>
+        </section>
+
+        <footer class="owner-main-footer"><span>DPRO フラワーショップ DPRO NEXT オーナーPC</span><span id="appVersion"></span></footer>
+      </div>
     </section>
+  </main>
 
-    <h2 class="section-title">今日の注文</h2>
-    <div class="toolbar">
-      <div class="field">
-        <label for="dashboardDate">表示日</label>
-        <input id="dashboardDate" type="date">
+  <dialog id="productEditorDialog" class="owner-dialog">
+    <form id="productEditorForm" method="dialog" class="owner-dialog-shell">
+      <header class="owner-dialog-header">
+        <div><div class="eyebrow owner-dark-eyebrow">PRODUCT EDITOR</div><h2 id="productEditorTitle">商品を登録</h2></div>
+        <button id="closeProductEditor" type="button" class="owner-dialog-close" aria-label="閉じる">×</button>
+      </header>
+
+      <input id="editProductId" type="hidden">
+
+      <div class="owner-dialog-body">
+        <section class="owner-editor-section">
+          <h3>基本情報</h3>
+          <div class="form-grid">
+            <div class="field"><label class="required" for="editProductName">商品名</label><input id="editProductName" required maxlength="200"></div>
+            <div class="field"><label for="editProductCode">商品コード</label><input id="editProductCode" maxlength="100"></div>
+            <div class="field"><label for="editProductCategory">カテゴリ</label><select id="editProductCategory"></select></div>
+            <div class="field"><label for="editProductType">販売方式</label><select id="editProductType"><option value="made_to_order">受注制作型</option><option value="ready_stock">完成品在庫型</option><option value="limited_stock">数量限定型</option><option value="seasonal_reservation">期間限定予約型</option><option value="consultation">相談商品型</option></select></div>
+            <div class="field"><label for="editPriceType">価格表示</label><select id="editPriceType"><option value="fixed">固定価格</option><option value="from">○円から</option><option value="consultation">価格はご相談</option></select></div>
+            <div class="field"><label for="editUnitLabel">単位</label><input id="editUnitLabel" value="点" maxlength="50"></div>
+            <div class="field"><label for="editMinimumPrice">最低価格</label><input id="editMinimumPrice" type="number" min="0" step="100" value="0"></div>
+            <div class="field"><label for="editDefaultPrice">標準価格</label><input id="editDefaultPrice" type="number" min="0" step="100" value="0"></div>
+            <div class="field"><label for="editSizeLabel">サイズ目安</label><input id="editSizeLabel" maxlength="200"></div>
+            <div class="field"><label for="editSeasonalLabel">季節・特集ラベル</label><input id="editSeasonalLabel" maxlength="200" placeholder="例：母の日限定"></div>
+            <div class="field full"><label for="editShortDescription">一覧用説明</label><textarea id="editShortDescription" maxlength="500"></textarea></div>
+            <div class="field full"><label for="editDetailDescription">詳細説明</label><textarea id="editDetailDescription" maxlength="8000"></textarea></div>
+          </div>
+        </section>
+
+        <section class="owner-editor-section">
+          <h3>制作・在庫・受付</h3>
+          <div class="form-grid">
+            <div class="field"><label for="editProductionPoints">制作ポイント</label><input id="editProductionPoints" type="number" min="0" value="1"></div>
+            <div class="field"><label for="editLeadMinutes">最低準備時間（分）</label><input id="editLeadMinutes" type="number" min="0" step="30" value="0"></div>
+            <div class="field"><label for="editLeadDays">最低準備日数</label><input id="editLeadDays" type="number" min="0" value="0"></div>
+            <div class="field"><label for="editStockMode">在庫管理</label><select id="editStockMode"><option value="unlimited">在庫数を管理しない</option><option value="stock">在庫数で管理</option><option value="daily_limit">日別上限で管理</option><option value="consultation">相談受付</option></select></div>
+            <div class="field"><label for="editAvailableStock">在庫数</label><input id="editAvailableStock" type="number" min="0"></div>
+            <div class="field"><label for="editDailyLimit">1日の受付上限</label><input id="editDailyLimit" type="number" min="0"></div>
+            <div class="field"><label for="editDisplayOrder">表示順</label><input id="editDisplayOrder" type="number" min="0" value="100"></div>
+          </div>
+
+          <div class="owner-toggle-grid">
+            <label><input id="editPickupEnabled" type="checkbox" checked><span>店頭受取</span></label>
+            <label><input id="editDeliveryEnabled" type="checkbox" checked><span>店舗配達</span></label>
+            <label><input id="editConsultationEnabled" type="checkbox" checked><span>相談可能</span></label>
+            <label><input id="editFeatured" type="checkbox"><span>おすすめ</span></label>
+            <label><input id="editSoldOut" type="checkbox"><span>売り切れ</span></label>
+            <label><input id="editPublished" type="checkbox" checked><span>公開</span></label>
+            <label><input id="editActive" type="checkbox" checked><span>商品を有効</span></label>
+            <label><input id="editRequiresQuote" type="checkbox"><span>見積り必須</span></label>
+            <label><input id="editRequiresSignboard" type="checkbox"><span>立札確認</span></label>
+            <label><input id="editRequiresRecipient" type="checkbox"><span>届け先必須</span></label>
+          </div>
+        </section>
+
+        <section id="productPhotoSection" class="owner-editor-section hidden">
+          <h3>商品写真</h3>
+          <p class="help">JPEG・PNG・WebP、10MB以内。最初の写真は自動的にメイン写真になります。</p>
+          <div class="owner-photo-upload">
+            <input id="productPhotoFile" type="file" accept="image/jpeg,image/png,image/webp">
+            <label class="owner-check-row"><input id="productPhotoPrimary" type="checkbox"><span>メイン写真にする</span></label>
+            <button id="uploadProductPhoto" type="button" class="btn btn-secondary">写真を追加</button>
+          </div>
+          <div id="productPhotoList" class="owner-photo-grid"></div>
+        </section>
       </div>
-      <button id="reloadDashboard" class="btn btn-secondary">更新</button>
-    </div>
-    <div id="todayOrders" class="table-wrap"><div class="loading">読み込み中…</div></div>
 
-    <h2 class="section-title">注文検索・ステータス更新</h2>
-    <div class="toolbar">
-      <div class="field">
-        <label for="orderStatusFilter">ステータス</label>
-        <select id="orderStatusFilter">
-          <option value="">すべて</option>
-          <option value="new">新規受付</option>
-          <option value="confirmed">注文確定</option>
-          <option value="production_waiting">制作待ち</option>
-          <option value="producing">制作中</option>
-          <option value="completed">完成</option>
-          <option value="delivery_preparing">配達準備</option>
-          <option value="delivering">配達中</option>
-          <option value="delivered">配達完了</option>
-          <option value="handed_over">引渡し完了</option>
-          <option value="cancelled">キャンセル</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="orderQuery">受付番号・備考</label>
-        <input id="orderQuery" placeholder="検索">
-      </div>
-      <button id="searchOrders" class="btn btn-primary">検索</button>
-    </div>
-    <div id="ordersTable" class="table-wrap"><div class="loading">読み込み中…</div></div>
+      <footer class="owner-dialog-footer">
+        <div id="productEditorAlert" class="hidden" role="alert"></div>
+        <button id="cancelProductEditor" type="button" class="btn btn-secondary">閉じる</button>
+        <button id="saveProductButton" type="submit" class="btn btn-primary">商品を保存</button>
+      </footer>
+    </form>
+  </dialog>
 
-    <h2 class="section-title">顧客検索</h2>
-    <div class="toolbar">
-      <div class="field">
-        <label for="customerQuery">氏名・電話番号・顧客番号・会社名</label>
-        <input id="customerQuery" placeholder="例：09012345678">
-      </div>
-      <button id="searchCustomers" class="btn btn-primary">検索</button>
-    </div>
-    <div id="customerResults" class="grid grid-3"></div>
-
-    <footer class="footer">
-      <div>DPRO フラワーショップ オーナー管理</div>
-      <div id="appVersion"></div>
-    </footer>
-  </section>
-</main>
-
-  <nav class="mobile-bottom-nav" id="mobileNav"></nav>
   <script src="config.js?v=FLOWER-15"></script>
   <script src="common.js?v=FLOWER-15"></script>
-  <script src="owner-v15.js"></script>
+  <script src="owner-next.js?v=FLOWER-NEXT-6"></script>
 </body>
 </html>
