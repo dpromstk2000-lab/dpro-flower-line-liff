@@ -300,10 +300,11 @@
 
 .counter-product-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
   gap: 10px;
   max-height: 520px;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   padding: 2px;
 }
 
@@ -451,7 +452,7 @@
   }
 
   .counter-product-grid {
-    grid-template-columns: repeat(3, minmax(170px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 
   .counter-item-fields {
@@ -508,8 +509,9 @@
   }
 
   .counter-product-grid {
-    grid-template-columns: repeat(2, minmax(140px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     max-height: none;
+    overflow: visible;
   }
 
   .counter-item-head {
