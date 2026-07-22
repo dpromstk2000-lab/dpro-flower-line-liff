@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
-  const PAGE_VERSION = "FLOWER-NEXT-5-ORDER-INTEGRATION-20260721";
+  const PAGE_VERSION = "FLOWER-NEXT-9-REPEAT-ORDER-20260722";
+  const REPEAT_ORDER_KEY = "dpro_flower_repeat_order_v1";
   DPRO.mountChrome("order");
   mountNextNavigation();
 
@@ -186,11 +187,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
+      const repeatApplied = applyRepeatOrderDraft();
+
       toggleFulfillment();
       await loadSlots();
       updateSummary();
 
-      if (requestedProduct || requestedMode === "custom") {
+      if (requestedProduct || requestedMode === "custom" || repeatApplied) {
         document.querySelector("#orderForm")?.scrollIntoView({
           behavior: "smooth",
           block: "start",
@@ -203,6 +206,116 @@ document.addEventListener("DOMContentLoaded", () => {
     } finally {
       state.loading = false;
     }
+  }
+
+  function applyRepeatOrderDraft() {
+    let draft = null;
+
+    try {
+      const raw = sessionStorage.getItem(REPEAT_ORDER_KEY);
+      if (!raw) return false;
+
+      draft = JSON.parse(raw);
+      sessionStorage.removeItem(REPEAT_ORDER_KEY);
+    } catch {
+      try {
+        sessionStorage.removeItem(REPEAT_ORDER_KEY);
+      } catch {
+        // Ignore unavailable session storage.
+      }
+      return false;
+    }
+
+    if (!draft || typeof draft !== "object") return false;
+
+    const savedAt = new Date(draft.saved_at || 0).getTime();
+    if (
+      !savedAt ||
+      Date.now() - savedAt > 2 * 60 * 60 * 1000
+    ) {
+      return false;
+    }
+
+    const mode = draft.mode === "custom" ? "custom" : "catalog";
+    applyMode(mode, false);
+
+    const product = state.products.find(item =>
+      (draft.product_id && item.id === draft.product_id) ||
+      (
+        draft.product_name &&
+        item.product_name === draft.product_name
+      )
+    );
+
+    if (product && isOrderable(product)) {
+      selectProduct(product.id, {
+        updateBudget: false,
+        syncRadio: true,
+        syncCustomSelect: true,
+      });
+    } else if (draft.product_id || draft.product_name) {
+      DPRO.setAlert(
+        DPRO.qs("#catalogSelectionNotice"),
+        "前回の商品は現在受付できないため、商品を選び直してください。",
+        "warning",
+      );
+    }
+
+    setRepeatValue("#usageType", draft.usage_type);
+    setRepeatValue("#colorMood", draft.color_mood);
+    setRepeatValue("#fulfillmentType", draft.fulfillment_type);
+
+    if (draft.budget_amount !== undefined && draft.budget_amount !== null) {
+      const minimum = Number(
+        selectedProduct()?.minimum_price || 0
+      );
+      budgetInput.value = String(
+        Math.max(minimum, Number(draft.budget_amount || 0))
+      );
+      state.budgetTouched = true;
+    }
+
+    setRepeatValue("#flowerPreferences", draft.flower_preferences);
+    setRepeatValue("#customSizeLabel", draft.custom_size_label);
+    setRepeatValue("#designStyle", draft.design_style);
+    setRepeatValue("#preferredFlowers", draft.preferred_flowers);
+    setRepeatValue("#avoidFlowers", draft.avoid_flowers);
+    setRepeatValue("#ribbonText", draft.ribbon_text);
+    setRepeatValue("#standingSignText", draft.standing_sign_text);
+    setRepeatValue("#wrappingOption", draft.wrapping_option);
+    setRepeatValue("#customerNote", draft.customer_note);
+
+    const recipient = draft.recipient;
+    if (recipient && typeof recipient === "object") {
+      setRepeatValue("#recipientName", recipient.recipient_name);
+      setRepeatValue("#recipientPhone", recipient.recipient_phone);
+      setRepeatValue("#recipientPostalCode", recipient.postal_code);
+      setRepeatValue("#recipientPrefecture", recipient.prefecture);
+      setRepeatValue("#recipientCity", recipient.city);
+      setRepeatValue("#recipientAddress1", recipient.address_line1);
+      setRepeatValue(
+        "#facilityName",
+        recipient.company_or_facility_name
+      );
+      setRepeatValue("#venueName", recipient.venue_name);
+      setRepeatValue("#deliveryNote", recipient.delivery_note);
+    }
+
+    DPRO.setAlert(
+      DPRO.qs("#pageAlert"),
+      draft.source === "member_anniversary"
+        ? "記念日の用途・ご予算・雰囲気を入力しました。商品と日時を選んでください。"
+        : "前回の内容を入力しました。現在の商品・価格・受取日時を確認してください。",
+      "info",
+    );
+
+    return true;
+  }
+
+  function setRepeatValue(selector, value) {
+    if (value === undefined || value === null || value === "") return;
+    const element = DPRO.qs(selector);
+    if (element) element.value = String(value);
   }
 
   async function loadProducts() {

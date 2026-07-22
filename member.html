@@ -3,59 +3,325 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#214c3b">
+  <meta name="theme-color" content="#17392d">
+  <meta name="description" content="注文進捗、完成写真、再注文、届け先、記念日を管理できるDPROフラワーショップのお客様マイページです。">
   <title>マイページ｜DPRO フラワーショップ</title>
   <link rel="stylesheet" href="common.css?v=FLOWER-15">
+  <link rel="stylesheet" href="member-next.css?v=FLOWER-NEXT-9">
 </head>
-<body>
-  <header class="topbar">
+<body class="member-next-body">
+  <header class="topbar member-topbar">
     <div class="topbar-inner">
       <div class="brand">
         <div class="brand-mark">✿</div>
         <div>
           <div class="brand-title">DPRO フラワーショップ</div>
-          <div class="brand-subtitle">注文・制作・配達管理 LINE</div>
+          <div class="brand-subtitle">注文・写真・届け先・記念日 マイページ</div>
         </div>
       </div>
-      <nav class="topnav" id="topnav"></nav>
+      <nav class="topnav" id="topnav" aria-label="メインメニュー"></nav>
     </div>
   </header>
-  
-<main class="page-shell">
-  <section class="hero">
-    <div class="eyebrow">お客様マイページ</div>
-    <h1>注文状況と、これまでのお花。</h1>
-    <p>現在の制作状況、受取・配達日時、過去の注文を確認できます。</p>
-  </section>
 
-  <div id="createdNotice" class="hidden"></div>
-  <div id="pageAlert" class="hidden"></div>
+  <main class="page-shell member-page-shell">
+    <section class="hero member-hero">
+      <div class="eyebrow">MY FLOWER PAGE</div>
+      <h1>贈ったお花も、次の記念日も。</h1>
+      <p>注文の進み具合、完成写真、過去のお花、届け先、記念日をまとめて確認できます。</p>
+      <div class="hero-actions">
+        <a class="btn btn-ghost" href="catalog.html">商品カタログ</a>
+        <a class="btn btn-rose" href="index.html">新しく注文する</a>
+      </div>
+    </section>
 
-  <section class="grid grid-3" id="profileStats">
-    <article class="card stat"><span class="stat-label">お客様</span><span class="stat-value" id="customerName">―</span></article>
-    <article class="card stat"><span class="stat-label">注文回数</span><span class="stat-value" id="orderCount">―</span></article>
-    <article class="card stat"><span class="stat-label">登録済み届け先</span><span class="stat-value" id="addressCount">―</span></article>
-  </section>
+    <div id="createdNotice" class="hidden" role="status"></div>
+    <div id="pageAlert" class="hidden member-page-alert" role="alert"></div>
 
-  <h2 class="section-title">ご注文</h2>
-  <div id="orders" class="grid grid-2">
-    <div class="card loading">注文情報を読み込んでいます…</div>
-  </div>
+    <section id="memberLoading" class="card loading member-loading-card">
+      マイページを読み込んでいます…
+    </section>
 
-  <h2 class="section-title">記念日</h2>
-  <div id="anniversaries" class="grid grid-3">
-    <div class="card loading">記念日を読み込んでいます…</div>
-  </div>
+    <section id="memberApp" class="hidden">
+      <section class="member-profile-card">
+        <div class="member-profile-main">
+          <div class="member-avatar">🌷</div>
+          <div>
+            <div class="eyebrow member-dark-eyebrow">MEMBER</div>
+            <h2 id="customerName">―</h2>
+            <p id="customerMeta">お客様情報を確認しています。</p>
+          </div>
+        </div>
+        <a class="btn btn-primary" href="index.html">お花を注文する</a>
+      </section>
 
-  <footer class="footer">
-    <div>DPRO フラワーショップ お客様マイページ</div>
-    <div id="appVersion"></div>
-  </footer>
-</main>
+      <section class="member-stat-grid" aria-label="マイページ集計">
+        <button type="button" class="member-stat-card active" data-open-tab="orders">
+          <span>対応中の注文</span>
+          <strong id="activeOrderCount">0</strong>
+          <small>受付からお渡し前まで</small>
+        </button>
+        <button type="button" class="member-stat-card photo" data-open-tab="orders">
+          <span>届いた写真</span>
+          <strong id="photoCount">0</strong>
+          <small>完成・配達完了写真</small>
+        </button>
+        <button type="button" class="member-stat-card address" data-open-tab="addresses">
+          <span>登録届け先</span>
+          <strong id="addressCount">0</strong>
+          <small>次回注文で選択可能</small>
+        </button>
+        <button type="button" class="member-stat-card anniversary" data-open-tab="anniversaries">
+          <span>登録記念日</span>
+          <strong id="anniversaryCount">0</strong>
+          <small>次のお花の予定</small>
+        </button>
+      </section>
 
-  <nav class="mobile-bottom-nav" id="mobileNav"></nav>
+      <nav class="member-tabs" aria-label="マイページ項目">
+        <button type="button" class="member-tab active" data-member-tab="orders">
+          <span>🧾</span>注文・写真
+        </button>
+        <button type="button" class="member-tab" data-member-tab="addresses">
+          <span>📍</span>届け先
+        </button>
+        <button type="button" class="member-tab" data-member-tab="anniversaries">
+          <span>🎂</span>記念日
+        </button>
+      </nav>
+
+      <section id="panel-orders" class="member-panel active" data-member-panel="orders">
+        <div class="member-section-heading">
+          <div>
+            <div class="eyebrow member-dark-eyebrow">ORDERS & PHOTOS</div>
+            <h2>注文状況と、これまでのお花</h2>
+            <p>現在の進捗、完成写真、受取・配達情報を確認できます。</p>
+          </div>
+          <div class="member-order-filters">
+            <button type="button" class="active" data-order-filter="active">対応中</button>
+            <button type="button" data-order-filter="history">完了・履歴</button>
+            <button type="button" data-order-filter="all">すべて</button>
+          </div>
+        </div>
+        <div id="orders" class="member-order-list">
+          <div class="card loading">注文情報を読み込んでいます…</div>
+        </div>
+      </section>
+
+      <section id="panel-addresses" class="member-panel" data-member-panel="addresses">
+        <div class="member-section-heading">
+          <div>
+            <div class="eyebrow member-dark-eyebrow">ADDRESS BOOK</div>
+            <h2>お届け先</h2>
+            <p>ご家族、会社、会場などを登録して、次回注文で簡単に選べます。</p>
+          </div>
+          <button id="newAddressButton" type="button" class="btn btn-primary">＋ 届け先を追加</button>
+        </div>
+        <div id="addresses" class="member-address-grid">
+          <div class="card loading">届け先を読み込んでいます…</div>
+        </div>
+      </section>
+
+      <section id="panel-anniversaries" class="member-panel" data-member-panel="anniversaries">
+        <div class="member-section-heading">
+          <div>
+            <div class="eyebrow member-dark-eyebrow">ANNIVERSARY</div>
+            <h2>記念日</h2>
+            <p>誕生日、結婚記念日、開業日、命日などを登録できます。</p>
+          </div>
+          <button id="newAnniversaryButton" type="button" class="btn btn-primary">＋ 記念日を追加</button>
+        </div>
+        <div id="anniversaries" class="member-anniversary-grid">
+          <div class="card loading">記念日を読み込んでいます…</div>
+        </div>
+      </section>
+
+      <footer class="footer member-footer">
+        <div>DPRO フラワーショップ お客様マイページ</div>
+        <div id="appVersion"></div>
+      </footer>
+    </section>
+  </main>
+
+  <nav class="mobile-bottom-nav member-mobile-nav" id="mobileNav" aria-label="スマートフォンメニュー"></nav>
+
+  <dialog id="addressDialog" class="member-dialog">
+    <form id="addressForm" method="dialog" class="member-dialog-shell">
+      <header class="member-dialog-header">
+        <div>
+          <div class="eyebrow member-dark-eyebrow">ADDRESS BOOK</div>
+          <h2 id="addressDialogTitle">届け先を追加</h2>
+        </div>
+        <button id="closeAddressDialog" type="button" class="member-dialog-close" aria-label="閉じる">×</button>
+      </header>
+
+      <div class="member-dialog-body">
+        <input id="addressId" type="hidden">
+        <div class="form-grid">
+          <div class="field">
+            <label class="required" for="addressLabel">登録名</label>
+            <input id="addressLabel" required maxlength="100" placeholder="例：実家、会社、発表会会場">
+          </div>
+          <div class="field">
+            <label class="required" for="addressRecipientName">受取人名</label>
+            <input id="addressRecipientName" required maxlength="200">
+          </div>
+          <div class="field">
+            <label for="addressRecipientPhone">電話番号</label>
+            <input id="addressRecipientPhone" inputmode="tel" maxlength="40">
+          </div>
+          <div class="field">
+            <label for="addressPostalCode">郵便番号</label>
+            <input id="addressPostalCode" inputmode="numeric" maxlength="20">
+          </div>
+          <div class="field">
+            <label for="addressPrefecture">都道府県</label>
+            <input id="addressPrefecture" value="福岡県" maxlength="80">
+          </div>
+          <div class="field">
+            <label for="addressCity">市区町村</label>
+            <input id="addressCity" maxlength="160">
+          </div>
+          <div class="field full">
+            <label class="required" for="addressLine1">番地・建物名</label>
+            <input id="addressLine1" required maxlength="300">
+          </div>
+          <div class="field full">
+            <label for="addressLine2">部屋番号・補足住所</label>
+            <input id="addressLine2" maxlength="300">
+          </div>
+          <div class="field">
+            <label for="addressFacility">会社・施設名</label>
+            <input id="addressFacility" maxlength="300">
+          </div>
+          <div class="field">
+            <label for="addressVenue">会場名</label>
+            <input id="addressVenue" maxlength="300">
+          </div>
+          <div class="field full">
+            <label for="addressDeliveryNote">配達時の注意</label>
+            <textarea id="addressDeliveryNote" maxlength="1000" placeholder="例：到着前に電話、正面入口の受付へ"></textarea>
+          </div>
+        </div>
+
+        <label class="member-check-row">
+          <input id="addressDefault" type="checkbox">
+          <span>次回注文で最初に表示する届け先にする</span>
+        </label>
+        <div id="addressAlert" class="hidden" role="alert"></div>
+      </div>
+
+      <footer class="member-dialog-footer">
+        <button id="cancelAddressDialog" type="button" class="btn btn-secondary">戻る</button>
+        <button id="saveAddressButton" type="submit" class="btn btn-primary">届け先を保存</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog id="anniversaryDialog" class="member-dialog">
+    <form id="anniversaryForm" method="dialog" class="member-dialog-shell">
+      <header class="member-dialog-header">
+        <div>
+          <div class="eyebrow member-dark-eyebrow">ANNIVERSARY</div>
+          <h2 id="anniversaryDialogTitle">記念日を追加</h2>
+        </div>
+        <button id="closeAnniversaryDialog" type="button" class="member-dialog-close" aria-label="閉じる">×</button>
+      </header>
+
+      <div class="member-dialog-body">
+        <input id="anniversaryId" type="hidden">
+        <div class="form-grid">
+          <div class="field">
+            <label class="required" for="anniversaryType">種類</label>
+            <select id="anniversaryType" required>
+              <option value="birthday">誕生日</option>
+              <option value="wedding_anniversary">結婚記念日</option>
+              <option value="opening_day">開業日</option>
+              <option value="company_anniversary">会社設立・周年</option>
+              <option value="memorial_day">命日・法要</option>
+              <option value="mother_day">母の日</option>
+              <option value="respect_for_aged_day">敬老の日</option>
+              <option value="custom">その他</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="required" for="anniversaryTitle">記念日の名前</label>
+            <input id="anniversaryTitle" required maxlength="200" placeholder="例：母の誕生日">
+          </div>
+          <div class="field">
+            <label class="required" for="anniversaryDate">日付</label>
+            <input id="anniversaryDate" type="date" required>
+          </div>
+          <div class="field">
+            <label for="anniversaryRemindDays">何日前に準備するか</label>
+            <input id="anniversaryRemindDays" type="number" min="0" max="3650" value="30">
+          </div>
+          <div class="field">
+            <label for="anniversaryBudget">いつものご予算</label>
+            <input id="anniversaryBudget" type="number" min="0" max="100000000" step="100">
+          </div>
+          <div class="field">
+            <label for="anniversaryColor">好みの色・雰囲気</label>
+            <select id="anniversaryColor">
+              <option value="">未設定</option>
+              <option value="おまかせ">おまかせ</option>
+              <option value="赤・ピンク系">赤・ピンク系</option>
+              <option value="黄色・オレンジ系">黄色・オレンジ系</option>
+              <option value="白・グリーン系">白・グリーン系</option>
+              <option value="青・紫系">青・紫系</option>
+              <option value="カラフル">カラフル</option>
+              <option value="優しい">優しい</option>
+              <option value="明るい">明るい</option>
+              <option value="華やか">華やか</option>
+              <option value="上品">上品</option>
+              <option value="シック">シック</option>
+            </select>
+          </div>
+        </div>
+
+        <label class="member-check-row">
+          <input id="anniversaryRepeatYearly" type="checkbox" checked>
+          <span>毎年繰り返す記念日として登録する</span>
+        </label>
+        <div id="anniversaryAlert" class="hidden" role="alert"></div>
+      </div>
+
+      <footer class="member-dialog-footer">
+        <button id="cancelAnniversaryDialog" type="button" class="btn btn-secondary">戻る</button>
+        <button id="saveAnniversaryButton" type="submit" class="btn btn-primary">記念日を保存</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog id="cancelDialog" class="member-dialog member-dialog-small">
+    <form id="cancelForm" method="dialog" class="member-dialog-shell">
+      <header class="member-dialog-header">
+        <div>
+          <div class="eyebrow member-dark-eyebrow">CHANGE / CANCEL</div>
+          <h2>変更・キャンセルを相談</h2>
+        </div>
+        <button id="closeCancelDialog" type="button" class="member-dialog-close" aria-label="閉じる">×</button>
+      </header>
+
+      <div class="member-dialog-body">
+        <input id="cancelOrderNumber" type="hidden">
+        <p id="cancelOrderLabel" class="member-cancel-label"></p>
+        <div class="field">
+          <label class="required" for="cancelReason">変更したい内容・理由</label>
+          <textarea id="cancelReason" required maxlength="1000" placeholder="例：受取時間を16時へ変更したい"></textarea>
+        </div>
+        <p class="help">この操作だけでは注文は自動キャンセルされません。店舗が内容を確認してご連絡します。</p>
+        <div id="cancelAlert" class="hidden" role="alert"></div>
+      </div>
+
+      <footer class="member-dialog-footer">
+        <button id="cancelCancelDialog" type="button" class="btn btn-secondary">戻る</button>
+        <button id="sendCancelRequestButton" type="submit" class="btn btn-primary">店舗へ相談を送る</button>
+      </footer>
+    </form>
+  </dialog>
+
   <script src="config.js?v=FLOWER-15"></script>
   <script src="common.js?v=FLOWER-15"></script>
-  <script src="member-v15.js"></script>
+  <script src="member-next.js?v=FLOWER-NEXT-9"></script>
 </body>
 </html>
