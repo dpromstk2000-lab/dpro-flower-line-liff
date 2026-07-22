@@ -3,62 +3,120 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#214c3b">
+  <meta name="theme-color" content="#17392d">
+  <meta name="description" content="DPROフラワーショップの今日の受付、注文確認、店頭引渡しを大きなボタンで操作するiPad画面です。">
   <title>店頭・iPad受付｜DPRO フラワーショップ</title>
   <link rel="stylesheet" href="common.css?v=FLOWER-15">
+  <link rel="stylesheet" href="owner-ipad-next.css?v=FLOWER-NEXT-8">
 </head>
-<body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand">
-        <div class="brand-mark">✿</div>
-        <div>
-          <div class="brand-title">DPRO フラワーショップ</div>
-          <div class="brand-subtitle">注文・制作・配達管理 LINE</div>
+<body class="ipad-next-body">
+  <main class="ipad-shell">
+    <section id="adminLock" class="ipad-login-shell">
+      <article class="card admin-lock ipad-login-card">
+        <div class="ipad-login-mark">📱</div>
+        <div class="eyebrow ipad-dark-eyebrow">COUNTER / iPAD</div>
+        <h1>店頭・iPad受付</h1>
+        <p>今日の注文確認、店頭受取、引渡しを大きなボタンで操作します。</p>
+        <div class="code-row ipad-login-code-row">
+          <input id="adminCode" type="password" inputmode="numeric" autocomplete="current-password" placeholder="管理コード" aria-label="管理コード">
+          <button id="loginButton" type="button" class="btn btn-primary">受付画面を開く</button>
+          <button id="clearCodeButton" type="button" class="btn btn-danger">保存コード削除</button>
         </div>
-      </div>
-      <nav class="topnav" id="topnav"></nav>
-    </div>
-  </header>
-  
-<main class="page-shell">
-  <section id="adminLock" class="card admin-lock">
-    <h2>店頭・iPad受付</h2>
-    <div class="code-row">
-      <input id="adminCode" type="password" inputmode="numeric" placeholder="管理コード">
-      <button id="loginButton" class="btn btn-primary">開く</button>
-      <button id="clearCodeButton" class="btn btn-danger">削除</button>
-    </div>
-    <div id="loginAlert" class="hidden"></div>
-  </section>
-
-  <section id="app" class="hidden">
-    <section class="hero">
-      <div class="eyebrow">COUNTER / iPAD</div>
-      <h1>本日の注文を、大きなボタンで操作。</h1>
-      <p>店頭受付、制作開始、完成、引渡しをタブレットから更新できます。</p>
+        <div id="loginAlert" class="hidden" role="alert"></div>
+      </article>
     </section>
 
-    <div class="toolbar">
-      <div class="field">
-        <label for="date">表示日</label>
-        <input id="date" type="date">
-      </div>
-      <button id="reload" class="btn btn-primary">更新</button>
-    </div>
-    <div id="alert" class="hidden"></div>
-    <div id="orders" class="grid grid-2"><div class="card loading">読み込み中…</div></div>
+    <section id="ipadApp" class="hidden">
+      <header class="ipad-header">
+        <div class="ipad-brand">
+          <div class="ipad-brand-mark">✿</div>
+          <div>
+            <strong>DPRO フラワーショップ</strong>
+            <span>店頭・iPad受付 DPRO NEXT</span>
+          </div>
+        </div>
 
-    <footer class="footer">
-      <div>DPRO フラワーショップ 店頭・iPad受付</div>
-      <div id="appVersion"></div>
-    </footer>
-  </section>
-</main>
+        <div class="ipad-header-actions">
+          <a class="ipad-header-link" href="counter.html?demo=1&source=counter">＋ 店頭注文</a>
+          <a class="ipad-header-link" href="counter.html?demo=1&source=phone">☎ 電話注文</a>
+          <a class="ipad-header-link secondary" href="staff.html?demo=1">🧺 作業画面</a>
+          <button id="logoutButton" type="button" class="ipad-header-link danger">閉じる</button>
+        </div>
+      </header>
 
-  <nav class="mobile-bottom-nav" id="mobileNav"></nav>
+      <section class="ipad-content">
+        <section class="ipad-title-row">
+          <div>
+            <div class="eyebrow ipad-dark-eyebrow">TODAY'S RECEPTION</div>
+            <h1>今日の受付</h1>
+            <p>注文確認と店頭引渡しを、受付順・時間順に操作します。</p>
+          </div>
+
+          <div class="ipad-date-controls">
+            <div class="field ipad-date-field">
+              <label for="date">表示日</label>
+              <input id="date" type="date">
+            </div>
+            <button id="reload" type="button" class="btn btn-primary">この日を更新</button>
+          </div>
+        </section>
+
+        <div id="alert" class="hidden ipad-page-alert" role="alert"></div>
+
+        <section class="ipad-summary-grid">
+          <button type="button" class="ipad-summary-card all active" data-filter="all">
+            <span>すべて</span>
+            <strong id="countAll">0</strong>
+            <small>本日の注文</small>
+          </button>
+          <button type="button" class="ipad-summary-card attention" data-filter="attention">
+            <span>要確認</span>
+            <strong id="countAttention">0</strong>
+            <small>確認・確定待ち</small>
+          </button>
+          <button type="button" class="ipad-summary-card pickup" data-filter="pickup">
+            <span>店頭受取</span>
+            <strong id="countPickup">0</strong>
+            <small>受取・引渡し</small>
+          </button>
+          <button type="button" class="ipad-summary-card delivery" data-filter="delivery">
+            <span>配達</span>
+            <strong id="countDelivery">0</strong>
+            <small>配達予定</small>
+          </button>
+          <button type="button" class="ipad-summary-card completed" data-filter="completed">
+            <span>完了</span>
+            <strong id="countCompleted">0</strong>
+            <small>引渡し・配達済み</small>
+          </button>
+        </section>
+
+        <section class="ipad-toolbar">
+          <div class="field ipad-search-field">
+            <label for="orderSearch">受付番号・お客様名・電話番号</label>
+            <input id="orderSearch" type="search" placeholder="検索">
+          </div>
+          <label class="ipad-inline-check">
+            <input id="showCompleted" type="checkbox">
+            <span>完了済みも通常一覧に表示</span>
+          </label>
+          <span id="lastUpdatedAt" class="ipad-updated-at">未更新</span>
+        </section>
+
+        <section id="orders" class="ipad-order-grid">
+          <div class="card loading">注文を読み込んでいます…</div>
+        </section>
+
+        <footer class="ipad-footer">
+          <span>DPRO フラワーショップ 店頭・iPad受付</span>
+          <span id="appVersion"></span>
+        </footer>
+      </section>
+    </section>
+  </main>
+
   <script src="config.js?v=FLOWER-15"></script>
   <script src="common.js?v=FLOWER-15"></script>
-  <script src="owner-ipad-v9.js"></script>
+  <script src="owner-ipad-next.js?v=FLOWER-NEXT-8"></script>
 </body>
 </html>

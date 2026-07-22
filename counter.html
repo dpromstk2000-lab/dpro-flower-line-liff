@@ -3,75 +3,118 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#214c3b">
+  <meta name="theme-color" content="#17392d">
+  <meta name="description" content="電話・店頭注文を顧客検索、写真付き商品、オーダーメイド、配達先まで一元登録するDPROフラワーショップ受付画面です。">
   <title>電話・店頭注文｜DPRO フラワーショップ</title>
   <link rel="stylesheet" href="common.css?v=FLOWER-15">
+  <link rel="stylesheet" href="counter-next.css?v=FLOWER-NEXT-8">
 </head>
-<body>
-  <header class="topbar">
+<body class="counter-next-body">
+  <header class="topbar counter-topbar">
     <div class="topbar-inner">
       <div class="brand">
         <div class="brand-mark">✿</div>
         <div>
           <div class="brand-title">DPRO フラワーショップ</div>
-          <div class="brand-subtitle">電話・店頭注文受付</div>
+          <div class="brand-subtitle">電話・店頭注文 DPRO NEXT受付</div>
         </div>
       </div>
-      <nav class="topnav" id="topnav"></nav>
+      <nav class="topnav" id="topnav" aria-label="メインメニュー"></nav>
     </div>
   </header>
 
-  <main class="page-shell">
-    <section id="adminLock" class="card admin-lock">
-      <h2>電話・店頭注文受付</h2>
-      <p>管理コードを入力してください。デモURLでは自動設定されます。</p>
-      <div class="code-row">
-        <input id="adminCode" type="password" inputmode="numeric" placeholder="管理コード">
-        <button id="loginButton" class="btn btn-primary">開く</button>
-        <button id="clearCodeButton" class="btn btn-danger">削除</button>
-      </div>
-      <div id="loginAlert" class="hidden"></div>
+  <main class="page-shell counter-page-shell">
+    <section id="adminLock" class="counter-login-shell">
+      <article class="card admin-lock counter-login-card">
+        <div class="counter-login-mark">☎️</div>
+        <div class="eyebrow counter-dark-eyebrow">PHONE / COUNTER</div>
+        <h1>電話・店頭注文受付</h1>
+        <p>顧客検索、前回と同じ注文、写真付き商品、オーダーメイドを一画面で登録します。</p>
+        <div class="code-row counter-login-code-row">
+          <input id="adminCode" type="password" inputmode="numeric" autocomplete="current-password" placeholder="管理コード" aria-label="管理コード">
+          <button id="loginButton" type="button" class="btn btn-primary">受付画面を開く</button>
+          <button id="clearCodeButton" type="button" class="btn btn-danger">保存コード削除</button>
+        </div>
+        <div id="loginAlert" class="hidden" role="alert"></div>
+      </article>
     </section>
 
     <section id="counterApp" class="hidden">
-      <section class="hero">
-        <div class="eyebrow">PHONE / COUNTER ORDER</div>
-        <h1>電話・店頭のご注文も、同じ顧客台帳へ。</h1>
-        <p>既存顧客を電話番号・氏名・顧客番号から検索し、そのまま注文を登録できます。</p>
+      <section class="hero counter-hero">
+        <div class="eyebrow">DPRO NEXT COUNTER ORDER</div>
+        <h1>お客様を見つけて、前回より早く受付。</h1>
+        <p>電話番号・氏名・顧客番号から検索し、過去注文や登録済み届け先をそのまま利用できます。</p>
         <div class="hero-actions">
-          <a class="btn btn-ghost" href="owner.html?demo=1">オーナー管理へ戻る</a>
+          <a class="btn btn-ghost" href="owner-ipad.html?demo=1">iPad受付</a>
+          <a class="btn btn-ghost" href="owner.html?demo=1#orders">オーナー注文管理</a>
+          <button id="logoutButton" type="button" class="btn btn-rose">受付画面を閉じる</button>
         </div>
       </section>
 
-      <div id="pageAlert" class="hidden"></div>
+      <div id="pageAlert" class="hidden counter-page-alert" role="alert"></div>
 
-      <div class="counter-layout">
-        <aside class="counter-sidebar">
-          <section class="card">
-            <h2>既存顧客検索</h2>
+      <div class="counter-next-layout">
+        <aside class="counter-customer-column">
+          <section class="card counter-search-card">
+            <div class="counter-section-heading">
+              <div>
+                <div class="eyebrow counter-dark-eyebrow">CUSTOMER</div>
+                <h2>お客様を検索</h2>
+              </div>
+              <button id="newCustomerButton" type="button" class="btn btn-secondary btn-small">新規顧客</button>
+            </div>
+
             <div class="field">
               <label for="customerSearch">氏名・電話番号・顧客番号・会社名</label>
-              <input id="customerSearch" placeholder="例：09012345678">
+              <div class="counter-search-row">
+                <input id="customerSearch" type="search" placeholder="例：09012345678">
+                <button id="customerSearchButton" type="button" class="btn btn-primary">検索</button>
+              </div>
             </div>
-            <div class="actions">
-              <button id="customerSearchButton" class="btn btn-primary">検索</button>
-              <button id="newCustomerButton" class="btn btn-secondary">新規顧客</button>
-            </div>
-            <div id="customerSearchAlert" class="hidden"></div>
-            <div id="customerSearchResults" class="customer-search-results"></div>
-            <div id="selectedCustomer" class="selected-customer"></div>
+            <div id="customerSearchAlert" class="hidden" role="alert"></div>
+            <div id="customerSearchResults" class="counter-customer-results"></div>
           </section>
 
-          <section class="card" style="margin-top:18px">
-            <h2>注文内容</h2>
+          <section id="selectedCustomerCard" class="card counter-selected-card">
+            <div id="selectedCustomer">
+              <div class="counter-empty-small">新しいお客様として受付します。</div>
+            </div>
+          </section>
+
+          <section id="recentOrdersCard" class="card counter-recent-card hidden">
+            <div class="counter-section-heading">
+              <div>
+                <div class="eyebrow counter-dark-eyebrow">ORDER HISTORY</div>
+                <h2>最近の注文</h2>
+              </div>
+            </div>
+            <div id="recentOrders" class="counter-recent-orders"></div>
+          </section>
+
+          <section class="card counter-summary-card">
+            <div class="counter-section-heading">
+              <div>
+                <div class="eyebrow counter-dark-eyebrow">SUMMARY</div>
+                <h2>注文内容</h2>
+              </div>
+            </div>
             <div id="counterSummary" class="summary-list"></div>
+            <div id="formAlert" class="hidden" role="alert"></div>
+            <button id="submitButton" type="submit" form="counterOrderForm" class="btn btn-primary counter-submit-button">この内容で注文を登録</button>
           </section>
         </aside>
 
-        <section>
+        <section class="counter-form-column">
           <form id="counterOrderForm" novalidate>
-            <article class="card">
-              <h2>1. 受付方法・お客様</h2>
+            <article class="card counter-step-card">
+              <div class="counter-step-head">
+                <span>1</span>
+                <div>
+                  <h2>受付方法・お客様情報</h2>
+                  <p>既存顧客を選ぶと自動入力されます。</p>
+                </div>
+              </div>
+
               <div class="form-grid">
                 <div class="field">
                   <label class="required" for="sourceType">受付方法</label>
@@ -103,18 +146,61 @@
               </div>
             </article>
 
-            <article class="card" style="margin-top:18px">
-              <div class="order-item-head">
-                <h2 style="margin:0">2. 商品</h2>
-                <button id="addItemButton" type="button" class="btn btn-secondary btn-small">商品を追加</button>
+            <article class="card counter-step-card">
+              <div class="counter-step-head">
+                <span>2</span>
+                <div>
+                  <h2>注文方法・商品</h2>
+                  <p>写真付き商品から選ぶか、用途と予算からオーダーメイドで受付します。</p>
+                </div>
               </div>
-              <div id="orderItems" class="order-item-list">
+
+              <div class="counter-mode-grid">
+                <button type="button" class="counter-mode-button active" data-order-mode="catalog">
+                  <span>🌷</span>
+                  <strong>カタログ商品</strong>
+                  <small>写真・価格から選択</small>
+                </button>
+                <button type="button" class="counter-mode-button" data-order-mode="custom">
+                  <span>🎨</span>
+                  <strong>オーダーメイド</strong>
+                  <small>用途・予算から制作</small>
+                </button>
+              </div>
+
+              <div class="counter-product-toolbar">
+                <div class="field">
+                  <label for="productSearch">商品検索</label>
+                  <input id="productSearch" type="search" placeholder="商品名・カテゴリ">
+                </div>
+                <label class="counter-inline-check">
+                  <input id="showFeaturedOnly" type="checkbox">
+                  <span>おすすめのみ</span>
+                </label>
+              </div>
+
+              <div id="productCatalog" class="counter-product-grid">
                 <div class="loading">商品を読み込んでいます…</div>
+              </div>
+
+              <div class="counter-selected-items-head">
+                <h3>選択中の商品</h3>
+                <button id="clearItemsButton" type="button" class="btn btn-secondary btn-small">商品をクリア</button>
+              </div>
+              <div id="orderItems" class="counter-item-list">
+                <div class="counter-empty-small">商品を選択してください。</div>
               </div>
             </article>
 
-            <article class="card" style="margin-top:18px">
-              <h2>3. 用途・受取日時</h2>
+            <article class="card counter-step-card">
+              <div class="counter-step-head">
+                <span>3</span>
+                <div>
+                  <h2>用途・受取日時</h2>
+                  <p>制作受付上限と商品準備時間を反映した空き枠を表示します。</p>
+                </div>
+              </div>
+
               <div class="form-grid">
                 <div class="field">
                   <label class="required" for="usageType">用途</label>
@@ -159,8 +245,15 @@
               </div>
             </article>
 
-            <article id="recipientCard" class="card hidden" style="margin-top:18px">
-              <h2>4. お届け先</h2>
+            <article id="recipientCard" class="card counter-step-card hidden">
+              <div class="counter-step-head">
+                <span>4</span>
+                <div>
+                  <h2>お届け先</h2>
+                  <p>登録済み届け先を選ぶと、住所と注意事項を自動入力します。</p>
+                </div>
+              </div>
+
               <div class="form-grid">
                 <div class="field full">
                   <label for="savedAddress">登録済み届け先</label>
@@ -213,12 +306,19 @@
               </div>
             </article>
 
-            <article class="card" style="margin-top:18px">
-              <h2>5. メッセージ・備考</h2>
+            <article class="card counter-step-card">
+              <div class="counter-step-head">
+                <span id="messageStepNumber">4</span>
+                <div>
+                  <h2>メッセージ・店舗メモ</h2>
+                  <p>お客様へ見せる内容と、店舗内だけの注意を分けて登録します。</p>
+                </div>
+              </div>
+
               <div class="form-grid">
                 <div class="field full">
                   <label for="messageText">メッセージカード</label>
-                  <textarea id="messageText"></textarea>
+                  <textarea id="messageText" placeholder="例：お誕生日おめでとう。いつもありがとう。"></textarea>
                 </div>
                 <div class="field">
                   <label for="senderName">カードのお名前</label>
@@ -234,27 +334,21 @@
                 </div>
               </div>
             </article>
-
-            <article class="card" style="margin-top:18px">
-              <div id="formAlert" class="hidden"></div>
-              <div class="actions">
-                <button id="submitButton" type="submit" class="btn btn-primary">この内容で注文を登録</button>
-              </div>
-            </article>
           </form>
         </section>
       </div>
 
-      <footer class="footer">
-        <div>DPRO フラワーショップ 電話・店頭注文</div>
+      <footer class="footer counter-footer">
+        <div>DPRO フラワーショップ 電話・店頭注文 DPRO NEXT</div>
         <div id="appVersion"></div>
       </footer>
     </section>
   </main>
 
   <nav class="mobile-bottom-nav" id="mobileNav"></nav>
+
   <script src="config.js?v=FLOWER-15"></script>
   <script src="common.js?v=FLOWER-15"></script>
-  <script src="counter-v15.js"></script>
+  <script src="counter-next.js?v=FLOWER-NEXT-8"></script>
 </body>
 </html>
